@@ -32,9 +32,9 @@
         </button>
     </header>
 
-    <!-- Settings Container (Left-aligned on small screens, centered on larger screens) -->
+    <!-- Settings Container -->
     <div class="bg-white border-b mt-14 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-[#0c6155] scrollbar-track-[#f4f6f8]">
-        <div class="flex md:justify-center text-sm font-medium text-gray-600">
+        <div class="flex justify-start md:justify-center text-sm font-medium text-gray-600">
             <a href="hadith.html" class="inline-flex flex-none px-4 py-3 text-center border-b-2 border-[#0c6155] text-[#0c6155] font-semibold min-w-[100px]">
                 <i class="fas fa-kaaba"></i>
                 <span class="ml-2">Hadith</span>
@@ -58,8 +58,25 @@
         </div>
     </div>
 
-    <!-- Surah List -->
-    <div id="surah-list" class="p-4 max-w-7xl mx-auto"></div>
+    <!-- Tabs for Quran Sections -->
+    <div class="max-w-7xl mx-auto mt-4 px-4">
+        <div class="flex overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-[#0c6155] scrollbar-track-[#f4f6f8] border-b border-gray-200 justify-start md:justify-center">
+            <button class="tab-button px-4 py-2 text-sm font-medium text-[#0c6155] border-b-2 border-[#0c6155] bg-[#fefcf9] min-w-[100px] flex-shrink-0" data-tab="quran-only">Quran Only</button>
+            <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#0c6155] hover:border-b-2 hover:border-[#0c6155] min-w-[100px] flex-shrink-0" data-tab="quran-tarjam">Quran + Tarjam</button>
+            <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#0c6155] hover:border-b-2 hover:border-[#0c6155] min-w-[100px] flex-shrink-0" data-tab="word-by-word">Word by Word</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="quran-only" class="tab-content p-4 animate-fadeIn">
+            <div id="surah-list-quran-only" class="space-y-3 w-full"></div>
+        </div>
+        <div id="quran-tarjam" class="tab-content p-4 hidden animate-fadeIn">
+            <div id="surah-list-quran-tarjam" class="space-y-3 w-full"></div>
+        </div>
+        <div id="word-by-word" class="tab-content p-4 hidden animate-fadeIn">
+            <div id="surah-list-word-by-word" class="space-y-3 w-full"></div>
+        </div>
+    </div>
 
     <script>
         let surahData = [];
@@ -76,73 +93,47 @@
             });
 
         function renderSurahs(surahList) {
-            const listElement = document.getElementById("surah-list");
-            listElement.innerHTML = '';
+            const lists = {
+                'quran-only': document.getElementById("surah-list-quran-only"),
+                'quran-tarjam': document.getElementById("surah-list-quran-tarjam"),
+                'word-by-word': document.getElementById("surah-list-word-by-word")
+            };
+
+            Object.values(lists).forEach(list => list.innerHTML = '');
 
             surahList.forEach(surah => {
-                const surahLink = document.createElement('div');
-                surahLink.classList.add('flex', 'items-center', 'justify-between', 'py-3', 'px-4', 'bg-[#fefcf9]', 'rounded-lg', 'shadow-sm', 'mb-3', 'cursor-pointer', 'hover:bg-gray-50', 'transition', 'duration-200');
-                surahLink.onclick = () => showSurahOptions(parseInt(surah.index));
-
-                surahLink.innerHTML = `
-                    <div class="flex items-start gap-4">
-                        <div class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-[#0c6155] text-sm font-bold mt-1">${parseInt(surah.index)}</div>
-                        <div>
-                            <div class="text-[#b2513a] font-semibold text-base">${surah.title}</div>
-                            <div class="text-sm text-gray-600">${surah.type} - Verses: ${surah.count}</div>
+                const surahIndex = parseInt(surah.index);
+                const surahItem = `
+                    <div class="flex items-center justify-between py-3 px-4 bg-[#fefcf9] rounded-lg shadow-sm cursor-pointer hover:bg-gray-50 transition duration-200 w-full">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 flex items-center justify-center rounded-full border-2 border-[#0c6155] text-sm font-bold mt-1">${surahIndex}</div>
+                            <div>
+                                <div class="text-[#b2513a] font-semibold text-base">${surah.title}</div>
+                                <div class="text-sm text-gray-600">${surah.type} - Verses: ${surah.count}</div>
+                            </div>
                         </div>
+                        <div class="text-right text-base text-[#0c6155] font-semibold font-arabic">${surah.titleAr}</div>
                     </div>
-                    <div class="text-right text-base text-[#0c6155] font-semibold font-arabic">${surah.titleAr}</div>
                 `;
 
-                listElement.appendChild(surahLink);
+                // Quran Only (links to read.html)
+                const quranOnlyLink = document.createElement('div');
+                quranOnlyLink.innerHTML = surahItem;
+                quranOnlyLink.onclick = () => window.location.href = `read.html?index=${surahIndex}/1`;
+                lists['quran-only'].appendChild(quranOnlyLink);
+
+                // Quran + Tarjam (links to surah.html)
+                const quranTarjamLink = document.createElement('div');
+                quranTarjamLink.innerHTML = surahItem;
+                quranTarjamLink.onclick = () => window.location.href = `surah.html?index=${surahIndex}`;
+                lists['quran-tarjam'].appendChild(quranTarjamLink);
+
+                // Word by Word (links to wordtoword.html)
+                const wordByWordLink = document.createElement('div');
+                wordByWordLink.innerHTML = surahItem;
+                wordByWordLink.onclick = () => window.location.href = `wordtoword.html?index=${surahIndex}#1`;
+                lists['word-by-word'].appendChild(wordByWordLink);
             });
-        }
-
-        function showSurahOptions(surahIndex) {
-            const surah = surahData.find(s => parseInt(s.index) === surahIndex);
-            const surahName = surah ? surah.title : 'Unknown Surah';
-
-            const modal = document.createElement('div');
-            modal.classList.add('modal', 'fixed', 'top-1/2', 'left-1/2', 'transform', '-translate-x-1/2', '-translate-y-1/2', 'bg-white', 'rounded-lg', 'shadow-xl', 'w-11/12', 'max-w-md', 'z-[1001]', 'p-6', 'text-center');
-
-            modal.innerHTML = `
-                <button class="absolute top-3 right-3 text-[#e74c3c] text-lg hover:text-[#c0392b] transition duration-200" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </button>
-                <h2 class="text-xl font-semibold mb-4 text-[#333] capitalize">${surahName}</h2>
-                <div class="space-y-4">
-                    <div class="flex gap-3 justify-center">
-                        <button onclick="window.location.href='surah?index=${surahIndex}'" class="flex items-center gap-2 px-4 py-2 border border-[#333] text-[#333] rounded-md hover:bg-gray-100 hover:border-[#000] text-sm uppercase transition duration-200">
-                            <i class="fas fa-book"></i> Read Surah
-                        </button>
-                        <button onclick="window.location.href='read?index=${surahIndex}/1'" class="flex items-center gap-2 px-4 py-2 border border-[#333] text-[#333] rounded-md hover:bg-gray-100 hover:border-[#000] text-sm uppercase transition duration-200">
-                            <i class="fas fa-book-reader"></i> Read Quran
-                        </button>
-                    </div>
-                    <button onclick="openWordToWord(${surahIndex})" class="flex items-center gap-2 px-4 py-2 border border-[#333] text-[#333] rounded-md hover:bg-gray-100 hover:border-[#000] text-sm uppercase w-full justify-center transition duration-200">
-                        <i class="fas fa-language"></i> Read Word to Word
-                    </button>
-                </div>
-            `;
-
-            document.body.appendChild(modal);
-
-            const overlay = document.createElement('div');
-            overlay.classList.add('overlay', 'fixed', 'top-0', 'left-0', 'w-full', 'h-full', 'bg-black/40', 'z-[1000]');
-            overlay.onclick = closeModal;
-            document.body.appendChild(overlay);
-        }
-
-        function openWordToWord(surahIndex) {
-            window.location.href = `wordtoword?index=${surahIndex}#1`;
-        }
-
-        function closeModal() {
-            const modal = document.querySelector('.modal');
-            const overlay = document.querySelector('.overlay');
-            if (modal) modal.remove();
-            if (overlay) overlay.remove();
         }
 
         function filterSurahs() {
@@ -168,10 +159,10 @@
                 headerTitle.classList.toggle('hidden');
                 if (!searchBar.classList.contains('hidden')) {
                     searchInput.focus();
-                    searchToggle.innerHTML = '<i class="fas fa-search"></i>'; // Reset to search icon
+                    searchToggle.innerHTML = '<i class="fas fa-search"></i>';
                 } else {
-                    searchInput.value = ''; // Clear input when hiding
-                    filterSurahs(); // Reset Surah list
+                    searchInput.value = '';
+                    filterSurahs();
                 }
             });
 
@@ -182,6 +173,38 @@
                 headerTitle.classList.remove('hidden');
                 searchInput.focus();
             });
+
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Update active tab styling
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('text-[#0c6155]', 'border-b-2', 'border-[#0c6155]', 'bg-[#fefcf9]');
+                        btn.classList.add('text-gray-600', 'hover:text-[#0c6155]', 'hover:border-b-2', 'hover:border-[#0c6155]');
+                    });
+                    button.classList.add('text-[#0c6155]', 'border-b-2', 'border-[#0c6155]', 'bg-[#fefcf9]');
+                    button.classList.remove('text-gray-600', 'hover:text-[#0c6155]', 'hover:border-b-2', 'hover:border-[#0c6155]');
+
+                    // Show/hide tab content with animation
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                        content.classList.remove('animate-fadeIn');
+                        if (content.id === button.getAttribute('data-tab')) {
+                            content.classList.remove('hidden');
+                            content.classList.add('animate-fadeIn');
+                        }
+                    });
+                });
+            });
+
+            // Ensure both settings and Quran tabs start at the left on small screens
+            const settingsContainer = document.querySelector('.bg-white.border-b .flex.overflow-x-auto');
+            const tabContainer = document.querySelector('.flex.overflow-x-auto.border-b');
+            settingsContainer.scrollLeft = 0;
+            tabContainer.scrollLeft = 0;
         });
     </script>
 
@@ -191,7 +214,7 @@
             font-family: 'Amiri', serif;
         }
 
-        /* Custom scrollbar for settings container */
+        /* Custom scrollbar for settings container and tabs */
         .scrollbar-thin {
             scrollbar-width: thin;
         }
@@ -208,6 +231,16 @@
         /* Ensure smooth scrolling for touch devices */
         .overflow-x-auto {
             -webkit-overflow-scrolling: touch;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-in-out;
         }
     </style>
 </body>
