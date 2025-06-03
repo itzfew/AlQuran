@@ -3,63 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tasbih Counter</title>
     <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for 3D beads and animations */
         .bead {
             background: radial-gradient(circle at 30%, #5b3a10, #2c1a05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-            transition: transform 0.6s ease, box-shadow 0.3s ease, opacity 0.6s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: transform 0.5s ease, box-shadow 0.3s ease, opacity 0.5s ease;
         }
         .bead-active {
             cursor: grab;
         }
         .bead-active:active {
-            transform: scale(0.92);
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
             cursor: grabbing;
         }
         .rope {
             background: linear-gradient(to bottom, #8b4513, #4a2c0b);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         .vibrate {
             animation: vibrate 0.15s ease;
         }
         @keyframes vibrate {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-3px); }
-            50% { transform: translateX(3px); }
-            75% { transform: translateX(-3px); }
+            25% { transform: translateX(-2px); }
+            50% { transform: translateX(2px); }
+            75% { transform: translateX(-2px); }
         }
         .slide-down {
-            animation: slideDown 0.6s ease forwards;
+            animation: slideDown 0.5s ease forwards;
         }
         @keyframes slideDown {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(180px) rotate(15deg); opacity: 0; }
+            100% { transform: translateY(140px) rotate(10deg); opacity: 0; }
         }
         .slide-in {
-            animation: slideIn 0.6s ease forwards;
+            animation: slideIn 0.5s ease forwards;
         }
         @keyframes slideIn {
-            0% { transform: translateY(-70px) rotate(-15deg); opacity: 0; }
+            0% { transform: translateY(-50px) rotate(-10deg); opacity: 0; }
             100% { transform: translateY(0) rotate(0deg); opacity: 1; }
         }
         .slide-to-bottom {
-            animation: slideToBottom 0.6s ease forwards;
+            animation: slideToBottom 0.5s ease forwards;
         }
         @keyframes slideToBottom {
             0% { transform: translateY(0); }
-            100% { transform: translateY(64px); }
+            100% { transform: translateY(48px); }
         }
         @media (min-width: 640px) {
             @keyframes slideToBottom {
                 0% { transform: translateY(0); }
-                100% { transform: translateY(80px); }
+                100% { transform: translateY(60px); }
             }
         }
         .bead-container {
@@ -70,41 +72,47 @@
             animation: glow 0.5s ease-in-out 2;
         }
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 16px rgba(255, 215, 0, 1); }
         }
         body {
             
-            background-size: 200px;
+            background-size: 150px;
         }
         .scrollbar-thin {
             scrollbar-width: thin;
         }
         .scrollbar-thumb-blue-700::-webkit-scrollbar-thumb {
-            background-color: #fefaf4;
+            background-color: #1e40af;
             border-radius: 10px;
         }
-        .scrollbar-track-gray-900::-webkit-scrollbar-track {
-            background-color: #fefaf4;
+        .scrollbar-track-blue-900::-webkit-scrollbar-track {
+            background-color: #1e3a8a;
         }
         .overflow-x-auto {
             -webkit-overflow-scrolling: touch;
         }
-        .settings-container {
-            display: flex;
-            justify-content: flex-start;
+        /* Modal styles */
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        @media (min-width: 640px) {
-            .settings-container {
-                justify-content: center;
-            }
+        .modal-content {
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal.active .modal-content {
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-b from-blue-950 to-blue-900 flex flex-col items-center text-white font-sans">
+<body class="min-h-screen bg-[#fefaf4] text-gray-800 font-sans flex flex-col items-center">
     <!-- Header -->
-    <header class="bg-blue-950 text-white flex items-center justify-between px-4 py-3 shadow fixed top-0 left-0 w-full z-10">
-        <h1 class="text-lg font-semibold mx-auto">Tasbih Counter</h1>
+    <header class="bg-blue-800 text-white flex items-center justify-between px-4 py-3 shadow fixed top-0 left-0 w-full z-10">
+        <h1 class="text-lg font-semibold">Tasbih Counter</h1>
         <div class="flex items-center gap-2">
             <label for="soundToggle" class="font-semibold text-sm">Sound:</label>
             <button id="soundToggle" class="bg-blue-700 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-900 transition">ON</button>
@@ -112,63 +120,78 @@
     </header>
 
     <!-- Settings Bar -->
-    <div class="bg-gray-900 border-b mt-14 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-gray-900 w-full">
-        <div class="settings-container text-sm font-medium text-gray-400">
-            <a href="index.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+    <div class="bg-white border-b mt-14 w-full overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-900">
+        <div class="flex text-sm font-medium text-gray-600 px-2">
+            <a href="index.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-blue-700 min-w-[90px]">
                 <i class="fas fa-book-quran"></i>
                 <span class="ml-2">Quran</span>
             </a>
-            <a href="hadith.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+            <a href="hadith.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-blue-700 min-w-[90px]">
                 <i class="fas fa-kaaba"></i>
                 <span class="ml-2">Hadith</span>
             </a>
-            <a href="kalima.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+            <a href="kalima.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-blue-700 min-w-[90px]">
                 <i class="fas fa-hand-point-right"></i>
                 <span class="ml-2">Kalima</span>
             </a>
-            <a href="tasbih.html" class="inline-flex flex-none px-4 py-3 text-center border-b-2 border-blue-700 text-white font-semibold min-w-[90px]">
+            <a href="tasbih.html" class="inline-flex flex-none px-4 py-3 text-center border-b-2 border-blue-700 text-blue-700 font-semibold min-w-[90px]">
                 <i class="fas fa-praying-hands"></i>
                 <span class="ml-2">Tasbih</span>
             </a>
-            <a href="99-names.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+            <a href="99-names.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-blue-700 min-w-[90px]">
                 <i class="fas fa-mosque"></i>
                 <span class="ml-2">99 Names</span>
             </a>
-            <a href="prayer.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+            <a href="prayer.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-blue-700 min-w-[90px]">
                 <i class="fas fa-pray"></i>
                 <span class="ml-2">Prayer</span>
             </a>
         </div>
     </div>
 
-    <!-- Dhikr Selection -->
-    <div class="mt-4">
-        <select id="steps" class="sbtn bg-gray-900 text-white px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md">
-            <option selected value="ALHAMDULILLAH">ALHAMDULILLAH</option>
-            <option value="ALLAHU AKBAR">ALLAHU AKBAR</option>
-            <option value="SUBHAN ALLAH">SUBHAN ALLAH</option>
-        </select>
-    </div>
+    <!-- Main Content - Centered -->
+    <main class="flex flex-col items-center justify-center flex-grow w-full px-4 py-8 mt-2">
+        <!-- Dhikr Selection -->
+        <div class="mt-4 w-full max-w-md flex justify-center">
+            <select id="steps" class="sbtn bg-gray-900 text-white px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md">
+                <option selected value="ALHAMDULILLAH">ALHAMDULILLAH</option>
+                <option value="ALLAHU AKBAR">ALLAHU AKBAR</option>
+                <option value="SUBHAN ALLAH">SUBHAN ALLAH</option>
+            </select>
+        </div>
 
-    <!-- Tasbih Container -->
-    <div class="container w-full max-w-[280px] sm:max-w-sm flex flex-col items-center justify-center mt-6">
-        <div class="box bg-blue-950 bg-opacity-90 rounded-2xl p-6 w-full relative shadow-2xl">
-            <!-- Counter Display -->
-            <input
-                id="counter"
-                class="input w-full text-center text-4xl sm:text-5xl font-bold bg-white text-blue-950 rounded-lg py-2 mb-6 shadow-inner"
-                readonly
-                type="text"
-                value="0"
-            />
-            <!-- Rope and Beads -->
-            <div class="bead-container relative flex justify-center items-center h-44 sm:h-52">
-                <div class="rope w-1.5 h-full rounded-full absolute"></div>
-                <div id="bead1" class="bead w-12 h-12 sm:w-14 sm:h-14 rounded-full absolute top-0"></div>
-                <div id="bead2" class="bead bead-active w-12 h-12 sm:w-14 sm:h-14 rounded-full absolute top-16 sm:top-20"></div>
+        <!-- Tasbih Container -->
+        <div class="w-full max-w-[260px] sm:max-w-sm flex flex-col items-center justify-center mt-6">
+            <div class="box bg-blue-950 bg-opacity-90 rounded-2xl p-5 w-full relative shadow-2xl">
+                <!-- Counter Display -->
+                <input
+                    id="counter"
+                    class="input w-full text-center text-3xl sm:text-4xl font-bold bg-white text-blue-950 rounded-lg py-2 mb-5 shadow-inner"
+                    readonly
+                    type="text"
+                    value="0"
+                />
+                <!-- Rope and Beads -->
+                <div class="bead-container relative flex justify-center items-center h-36 sm:h-44">
+                    <div class="rope w-1 h-full rounded-full absolute"></div>
+                    <div id="bead1" class="bead w-10 h-10 sm:w-12 sm:h-12 rounded-full absolute top-0"></div>
+                    <div id="bead2" class="bead bead-active w-10 h-10 sm:w-12 sm:h-12 rounded-full absolute top-12 sm:top-16"></div>
+                </div>
+                <!-- Reset Button -->
+                <button id="resetButton" class="btn1 absolute top-2 right-2 w-7 h-7 bg-red-700 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-800 transition shadow-md">R</button>
             </div>
-            <!-- Reset Button -->
-            <button class="btn1 absolute top-2 right-2 w-8 h-8 bg-red-700 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-800 transition shadow-md">R</button>
+        </div>
+    </main>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="resetModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 invisible">
+        <div class="modal-content bg-white rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+            <h3 class="text-lg font-bold mb-4">Reset Counter</h3>
+            <p class="mb-6">Are you sure you want to reset the counter to zero?</p>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelReset" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition">Cancel</button>
+                <button id="confirmReset" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">Reset</button>
+            </div>
         </div>
     </div>
 
@@ -179,10 +202,14 @@
         const input = document.getElementById('counter');
         const soundToggleButton = document.getElementById('soundToggle');
         const clickSound = document.getElementById('clickSound');
-        const resetButton = document.querySelector('.btn1');
+        const resetButton = document.getElementById('resetButton');
         const steps = document.getElementById('steps');
         const bead1 = document.getElementById('bead1');
         const bead2 = document.getElementById('bead2');
+        const resetModal = document.getElementById('resetModal');
+        const cancelResetBtn = document.getElementById('cancelReset');
+        const confirmResetBtn = document.getElementById('confirmReset');
+        
         let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
         let isDragging = false;
         let currentY = 0;
@@ -199,36 +226,58 @@
             localStorage.setItem('soundEnabled', soundEnabled);
         });
 
-        // Reset counter and beads
+        // Show reset confirmation modal
         resetButton.addEventListener('click', () => {
             if (soundEnabled) {
                 clickSound.play();
                 navigator.vibrate?.(50);
             }
-            localStorage.clickcount = 0;
+            resetModal.classList.add('active');
+        });
+
+        // Hide modal when cancel is clicked
+        cancelResetBtn.addEventListener('click', () => {
+            resetModal.classList.remove('active');
+        });
+
+        // Reset counter when confirmed
+        confirmResetBtn.addEventListener('click', () => {
+            resetCounter();
+            resetModal.classList.remove('active');
+        });
+
+        // Reset counter function
+        function resetCounter() {
+            if (soundEnabled) {
+                clickSound.play();
+                navigator.vibrate?.(50);
+            }
+            const currentDhikr = steps.value;
+            localStorage.setItem(`clickcount_${currentDhikr}`, 0);
             input.value = 0;
             resetBeads();
-        });
+        }
 
         // Reset on dhikr change
         steps.addEventListener('change', () => {
-            if (steps.value !== 'ALHAMDULILLAH') {
-                localStorage.clickcount = 0;
-                input.value = 0;
-                resetBeads();
-            }
+            const currentDhikr = steps.value;
+            const count = localStorage.getItem(`clickcount_${currentDhikr}`) || 0;
+            input.value = count;
+            resetBeads();
         });
 
         // Initialize counter and beads
         window.onload = () => {
-            input.value = localStorage.clickcount || 0;
+            const currentDhikr = steps.value;
+            const count = localStorage.getItem(`clickcount_${currentDhikr}`) || 0;
+            input.value = count;
             resetBeads();
         };
 
         // Reset bead positions
         function resetBeads() {
             bead1.style.top = '0px';
-            bead2.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
+            bead2.style.top = `${window.innerWidth < 640 ? 48 : 60}px`;
             bead1.style.transform = 'translateY(0) rotate(0deg)';
             bead2.style.transform = 'translateY(0) rotate(0deg)';
             bead1.style.opacity = '1';
@@ -252,7 +301,7 @@
             setTimeout(() => {
                 bottomBead.classList.remove('vibrate', 'slide-down');
                 bottomBead.style.opacity = '0';
-                bottomBead.style.top = `${window.innerWidth < 640 ? -48 : -56}px`;
+                bottomBead.style.top = `${window.innerWidth < 640 ? -40 : -48}px`;
                 bottomBead.style.transform = 'translateY(0) rotate(0deg)';
                 bottomBead.classList.add('slide-in');
                 bottomBead.classList.remove('bead-active');
@@ -260,24 +309,24 @@
                     bottomBead.style.top = '0px';
                     bottomBead.style.opacity = '1';
                     bottomBead.classList.remove('slide-in');
-                }, 600);
+                }, 500);
                 topBead.classList.add('slide-to-bottom');
                 topBead.style.zIndex = '10';
                 setTimeout(() => {
-                    topBead.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
+                    topBead.style.top = `${window.innerWidth < 640 ? 48 : 60}px`;
                     topBead.style.transform = 'translateY(0) rotate(0deg)';
                     topBead.classList.remove('slide-to-bottom');
                     topBead.classList.add('bead-active');
-                    // Swap roles
                     const temp = topBead;
                     topBead = bottomBead;
                     bottomBead = temp;
-                }, 600);
-            }, 600);
-            localStorage.clickcount = Number(localStorage.clickcount || 0) + 1;
-            input.value = localStorage.clickcount;
-            // Milestone glow at 33 and 99
-            if (localStorage.clickcount % 33 === 0 || localStorage.clickcount % 99 === 0) {
+                }, 500);
+            }, 500);
+            const currentDhikr = steps.value;
+            const newCount = Number(localStorage.getItem(`clickcount_${currentDhikr}`) || 0) + 1;
+            localStorage.setItem(`clickcount_${currentDhikr}`, newCount);
+            input.value = newCount;
+            if (newCount % 33 === 0 || newCount % 99 === 0) {
                 input.classList.add('milestone-glow');
                 setTimeout(() => input.classList.remove('milestone-glow'), 1000);
             }
@@ -315,21 +364,21 @@
             const bead = bottomBead;
             const container = bead.closest('.bead-container').getBoundingClientRect();
             let newY = (e.clientY || e.touches[0].clientY) - container.top - currentY;
-            newY = Math.max(0, Math.min(newY, window.innerWidth < 640 ? 176 : 208));
+            newY = Math.max(0, Math.min(newY, window.innerWidth < 640 ? 144 : 176));
             bead.style.top = `${newY}px`;
-            bead.style.transform = `rotate(${newY / 10}deg)`;
-            bead.style.opacity = `${1 - newY / (window.innerWidth < 640 ? 176 : 208)}`;
+            bead.style.transform = `rotate(${newY / 15}deg)`;
+            bead.style.opacity = `${1 - newY / (window.innerWidth < 640 ? 144 : 176)}`;
         }
 
-        function stopDragging(e) {
+        function stopDragging() {
             if (!isDragging) return;
             const bead = bottomBead;
             isDragging = false;
-            bead.style.transition = 'transform 0.6s ease, box-shadow 0.3s ease, opacity 0.6s ease';
-            if (parseFloat(bead.style.top) > (window.innerWidth < 640 ? 140 : 160)) {
+            bead.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease, opacity 0.5s ease';
+            if (parseFloat(bead.style.top) > (window.innerWidth < 640 ? 100 : 120)) {
                 handleBeadInteraction();
             } else {
-                bead.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
+                bead.style.top = `${window.innerWidth < 640 ? 48 : 60}px`;
                 bead.style.opacity = '1';
                 bead.style.transform = 'translateY(0) rotate(0deg)';
             }
