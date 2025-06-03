@@ -63,36 +63,36 @@
     </div>
 
     <!-- Prayer Times Content -->
-    <div class="max-w-7xl mx-auto mt-4 px-4">
+    <div class="max-w-4xl mx-auto mt-4 px-4">
         <!-- Top Section -->
         <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex justify-between items-start">
             <!-- Left Section: Hijri Calendar and Location -->
             <div class="flex items-center w-7/12">
-                <a href="#" class="dcd-calender bg-[#eef4f2] rounded-lg p-3 text-center mr-4 cursor-pointer hover:bg-[#e0e8e6] transition">
-                    <img src="https://resources.dawateislami.net/global/prayerTimes/resources/assets/images/home/hijri.webp" alt="Hijri" class="h-10 w-10 mx-auto mb-1">
-                    <p class="text-sm font-semibold">Hijri</p>
-                    <span class="text-xs font-semibold">Calendar</span>
+                <a href="#" class="dcd-calender bg-[#eef4f2] rounded-lg p-2 text-center mr-3 cursor-pointer hover:bg-[#e0e8e6] transition">
+                    <img src="https://resources.dawateislami.net/global/prayerTimes/resources/assets/images/home/hijri.webp" alt="Hijri" class="h-8 w-8 mx-auto mb-1">
+                    <p class="text-xs font-semibold">Hijri</p>
+                    <span class="text-[10px] font-semibold">Calendar</span>
                 </a>
                 <div>
-                    <h1 id="location-title" class="text-2xl font-semibold text-black capitalize mb-1">Fetching location...</h1>
-                    <p id="gmt-info" class="text-sm text-gray-600 mb-1">GMT: <span>Fetching...</span> | Height: <span>Fetching...</span></p>
-                    <p class="text-sm text-black capitalize flex items-center">
-                        <img src="https://resources.dawateislami.net/global/prayerTimes/resources/assets/images/home/point.png" alt="Location" class="h-5 w-5 mr-1 filter invert">
-                        <span id="location-address">Fetching address...</span>
+                    <h1 id="location-title" class="text-xl font-semibold text-black capitalize mb-1">Srinagar</h1>
+                    <p id="gmt-info" class="text-xs text-gray-600 mb-1">GMT: <span>5.5</span> | Height: <span>5244.49 feet</span></p>
+                    <p class="text-xs text-black capitalize flex items-center">
+                        <img src="https://resources.dawateislami.net/global/prayerTimes/resources/assets/images/home/point.png" alt="Location" class="h-4 w-4 mr-1 filter invert">
+                        <span id="location-address">Srinagar, Jammu and Kashmir, India</span>
                     </p>
                 </div>
             </div>
             <!-- Right Section: Dates and Change Location -->
             <div class="flex flex-col items-end w-5/12">
                 <div class="mb-2">
-                    <p class="text-sm border-b border-black flex items-center"><i class="fas fa-calendar-days mr-2"></i><span id="gregorian-date">Fetching...</span></p>
-                    <p class="text-sm border-b border-black flex items-center"><i class="fas fa-moon mr-2"></i><span id="hijri-date">Fetching...</span></p>
-                    <p class="text-sm flex items-center"><i class="fas fa-clock mr-2"></i>Timezone: <span id="timezone">Fetching...</span></p>
+                    <p class="text-xs border-b border-black flex items-center"><i class="fas fa-calendar-days mr-1 text-[10px]"></i><span id="gregorian-date">03 June, 2025</span></p>
+                    <p class="text-xs border-b border-black flex items-center"><i class="fas fa-moon mr-1 text-[10px]"></i><span id="hijri-date">25-Dhu al-Hijjah-1446</span></p>
+                    <p class="text-xs flex items-center"><i class="fas fa-clock mr-1 text-[10px]"></i>Timezone: <span id="timezone">Asia/Kolkata</span></p>
                 </div>
-                <button id="change-location" class="flex items-center bg-[#3a3a77] text-white rounded-lg px-4 py-2 hover:bg-[#2e2e5f] transition">
-                    <span class="font-semibold mr-2">Change</span>Location
-                    <span class="flex items-center justify-center w-9 h-9 bg-white rounded-full ml-3">
-                        <i class="fas fa-map-marker-alt text-[#3a3a77] text-lg"></i>
+                <button id="change-location" class="flex items-center bg-[#3a3a77] text-white rounded-lg px-3 py-1.5 hover:bg-[#2e2e5f] transition">
+                    <span class="text-xs font-semibold mr-2">Location</span>
+                    <span class="flex items-center justify-center w-7 h-7 bg-white rounded-full ml-2">
+                        <i class="fas fa-map-marker-alt text-[#3a3a77] text-sm"></i>
                     </span>
                 </button>
             </div>
@@ -100,24 +100,40 @@
 
         <!-- Prayer Times Section -->
         <div class="bg-white rounded-lg shadow-sm p-4">
-            <div class="flex justify-end mb-4">
-                <button id="scroll-left" class="bg-[#3a3a77] text-white rounded-lg w-10 h-10 flex items-center justify-center mr-2 hover:bg-[#2e2e5f] transition">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-                <button id="scroll-right" class="bg-[#3a3a77] text-white rounded-lg w-10 h-10 flex items-center justify-center hover:bg-[#2e2e5f] transition">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-            <div id="prayer-times" class="flex overflow-x-auto scrollbar-thin scrollbar-thumb-[#3a3a77] scrollbar-track-[#f4f6f8] gap-2 py-2" style="cursor: grab;">
-                <!-- Prayer time cards will be inserted here -->
+            <div id="prayer-times" class="flex overflow-x-auto scrollbar-thin scrollbar-thumb-[#3a3a77] scrollbar-track-[#f4f6f8] gap-2 py-2 snap-x snap-mandatory" style="cursor: grab;">
+                <div class="flex-none w-[180px] bg-[#eef4f2] rounded-lg p-3 text-center min-h-[120px] flex flex-col justify-center snap-center" data-index="0">
+                    <p class="text-sm font-bold">Fajr</p>
+                    <p class="text-base font-bold">03:36 AM</p>
+                </div>
+                <div class="flex-none w-[180px] bg-[#eef4f2] rounded-lg p-3 text-center min-h-[120px] flex flex-col justify-center snap-center" data-index="1">
+                    <p class="text-sm font-bold">Sunrise</p>
+                    <p class="text-base font-bold">05:13 AM</p>
+                </div>
+                <div class="flex-none w-[180px] bg-[#b6b6e1] rounded-lg p-3 text-center min-h-[140px] flex flex-col justify-center snap-center border border-[#6e6ea7]" data-index="2">
+                    <p class="text-xs font-bold mb-1">Upcoming</p>
+                    <p class="text-sm font-bold">Dhuhr</p>
+                    <p class="text-base font-bold">12:28 PM</p>
+                </div>
+                <div class="flex-none w-[180px] bg-[#eef4f2] rounded-lg p-3 text-center min-h-[120px] flex flex-col justify-center snap-center" data-index="3">
+                    <p class="text-sm font-bold">Asr</p>
+                    <p class="text-base font-bold">05:29 PM</p>
+                </div>
+                <div class="flex-none w-[180px] bg-[#eef4f2] rounded-lg p-3 text-center min-h-[120px] flex flex-col justify-center snap-center" data-index="4">
+                    <p class="text-sm font-bold">Maghrib</p>
+                    <p class="text-base font-bold">07:44 PM</p>
+                </div>
+                <div class="flex-none w-[180px] bg-[#eef4f2] rounded-lg p-3 text-center min-h-[120px] flex flex-col justify-center snap-center" data-index="5">
+                    <p class="text-sm font-bold">Isha</p>
+                    <p class="text-base font-bold">09:21 PM</p>
+                </div>
             </div>
         </div>
 
         <!-- Method Selection -->
         <div class="mt-4 flex gap-4 justify-center">
-            <div class="flex flex-col w-[250px]">
-                <label for="method-select" class="text-sm font-medium text-gray-600 mb-1">Calculation Method</label>
-                <select id="method-select" onchange="getPrayerTimes()" class="p-2 text-sm border border-[#3a3a77] rounded-md bg-white text-[#212529] focus:outline-none w-full">
+            <div class="flex flex-col w-[200px]">
+                <label for="method-select" class="text-xs font-medium text-gray-600 mb-1">Calculation Method</label>
+                <select id="method-select" onchange="getPrayerTimes()" class="p-1.5 text-xs border border-[#3a3a77] rounded-md bg-white text-[#212529] focus:outline-none w-full">
                     <option value="0">Jafari / Shia Ithna-Ashari</option>
                     <option value="1">University of Islamic Sciences, Karachi</option>
                     <option value="2">Islamic Society of North America</option>
@@ -135,9 +151,9 @@
                     <option value="15">Moonsighting Committee Worldwide</option>
                 </select>
             </div>
-            <div class="flex flex-col w-[150px]">
-                <label for="time-format-select" class="text-sm font-medium text-gray-600 mb-1">Time Format</label>
-                <select id="time-format-select" onchange="updateTimeFormat()" class="p-2 text-sm border border-[#3a3a77] rounded-md bg-white text-[#212529] focus:outline-none w-full">
+            <div class="flex flex-col w-[120px]">
+                <label for="time-format-select" class="text-xs font-medium text-gray-600 mb-1">Time Format</label>
+                <select id="time-format-select" onchange="updateTimeFormat()" class="p-1.5 text-xs border border-[#3a3a77] rounded-md bg-white text-[#212529] focus:outline-none w-full">
                     <option value="12" selected>12-hour</option>
                     <option value="24">24-hour</option>
                 </select>
@@ -147,9 +163,13 @@
 
     <script>
         let timeFormat = 12;
-        let currentPrayerIndex = -1;
+        let nextPrayerIndex = 2; // Default to Dhuhr as upcoming for initial display
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Center default upcoming prayer
+            centerUpcomingPrayer();
+
+            // Fetch actual prayer times
             getPrayerTimes();
 
             // Search bar toggle (placeholder)
@@ -181,20 +201,8 @@
             const settingsContainer = document.querySelector('.bg-white.border-b .flex.overflow-x-auto');
             settingsContainer.scrollLeft = 0;
 
-            // Prayer times scrolling
+            // Prayer times drag to scroll
             const prayerTimes = document.getElementById('prayer-times');
-            const scrollLeftBtn = document.getElementById('scroll-left');
-            const scrollRightBtn = document.getElementById('scroll-right');
-
-            scrollLeftBtn.addEventListener('click', () => {
-                prayerTimes.scrollBy({ left: -228, behavior: 'smooth' });
-            });
-
-            scrollRightBtn.addEventListener('click', () => {
-                prayerTimes.scrollBy({ left: 228, behavior: 'smooth' });
-            });
-
-            // Drag to scroll
             let isDown = false;
             let startX;
             let scrollLeft;
@@ -246,7 +254,7 @@
                         .then(data => {
                             const address = data.locality ? `${data.locality}, ${data.principalSubdivision}, ${data.countryName}` : 'Address not available';
                             const city = data.locality || 'Unknown';
-                            document.getElementById('location-title').textContent = `Prayer Times in ${city}`;
+                            document.getElementById('location-title').textContent = city;
                             document.getElementById('location-address').textContent = address;
                             document.getElementById('gmt-info').innerHTML = `GMT: <span>${(new Date().getTimezoneOffset() / -60).toFixed(1)}</span> | Height: <span>${(data.elevation || 0).toFixed(2)} feet</span>`;
                             document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -287,7 +295,7 @@
 
         function displayDateInfo(dateData) {
             const gregorianDate = dateData.gregorian;
-            const hijriDate = dateData.hijri;
+            const hijriDate = data.hijri;
             document.getElementById('gregorian-date').textContent = `${gregorianDate.day} ${gregorianDate.month.en}, ${gregorianDate.year}`;
             document.getElementById('hijri-date').textContent = `${hijriDate.day}-${hijriDate.month.en}-${hijriDate.year}`;
         }
@@ -305,61 +313,56 @@
                 { name: 'Isha', time: timings.Isha }
             ];
 
-            currentPrayerIndex = -1;
-            let nextPrayerIndex = -1;
+            nextPrayerIndex = -1;
             prayers.forEach((prayer, index) => {
                 const [hour, minute] = prayer.time.split(':').map(Number);
                 const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-                if (now >= prayerTime && now < new Date(prayerTime.getTime() + 60*60*1000)) {
-                    currentPrayerIndex = index;
-                } else if (now < prayerTime && nextPrayerIndex === -1) {
+                if (now < prayerTime && nextPrayerIndex === -1) {
                     nextPrayerIndex = index;
                 }
             });
 
             prayers.forEach((prayer, index) => {
                 const formattedTime = timeFormat === 12 ? convertTo12Hour(prayer.time) : prayer.time;
-                const isCurrent = index === currentPrayerIndex;
-                const isNext = index === nextPrayerIndex && currentPrayerIndex === -1;
+                const isNext = index === nextPrayerIndex;
                 const card = document.createElement('div');
-                card.className = 'flex-none w-[228px] bg-[#eef4f2] rounded-lg p-4 text-center min-h-[155px] flex flex-col justify-center';
-                let heightClass = 'h-[155px]';
+                card.className = 'flex-none w-[180px] bg-[#eef4f2] rounded-lg p-3 text-center min-h-[120px] flex flex-col justify-center snap-center';
+                let heightClass = 'h-[120px]';
                 let bgClass = 'bg-[#eef4f2] text-black';
                 let borderClass = '';
                 let statusText = '';
 
-                if (isCurrent) {
-                    heightClass = 'h-[180px]';
-                    bgClass = 'bg-[#3a3a77] text-white';
-                    statusText = '<p class="text-sm font-bold mb-2">Current</p>';
-                } else if (isNext) {
-                    heightClass = 'h-[180px]';
+                if (isNext) {
+                    heightClass = 'h-[140px]';
                     bgClass = 'bg-[#b6b6e1] text-black';
                     borderClass = 'border border-[#6e6ea7]';
-                    statusText = '<p class="text-sm font-bold mb-2">Upcoming</p>';
+                    statusText = '<p class="text-xs font-bold mb-1">Upcoming</p>';
                 }
 
                 card.innerHTML = `
                     ${statusText}
-                    <p class="text-lg font-bold">${prayer.name}</p>
-                    <p class="text-xl font-bold">${formattedTime}</p>
+                    <p class="text-sm font-bold">${prayer.name}</p>
+                    <p class="text-base font-bold">${formattedTime}</p>
                 `;
                 card.className += ` ${heightClass} ${bgClass} ${borderClass}`;
                 card.dataset.index = index;
                 prayerTimes.appendChild(card);
             });
 
-            // Center current or next prayer
-            if (currentPrayerIndex !== -1 || nextPrayerIndex !== -1) {
-                const targetIndex = currentPrayerIndex !== -1 ? currentPrayerIndex : nextPrayerIndex;
-                const card = prayerTimes.querySelector(`[data-index="${targetIndex}"]`);
-                if (card) {
-                    const containerWidth = prayerTimes.offsetWidth;
-                    const cardWidth = card.offsetWidth;
-                    const cardOffset = card.offsetLeft;
-                    const scrollPosition = cardOffset - (containerWidth - cardWidth) / 2;
-                    prayerTimes.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-                }
+            // Center upcoming prayer
+            centerUpcomingPrayer();
+        }
+
+        function centerUpcomingPrayer() {
+            const prayerTimes = document.getElementById('prayer-times');
+            const targetIndex = nextPrayerIndex !== -1 ? nextPrayerIndex : 2; // Default to Dhuhr if no upcoming
+            const card = prayerTimes.querySelector(`[data-index="${targetIndex}"]`);
+            if (card) {
+                const containerWidth = prayerTimes.offsetWidth;
+                const cardWidth = card.offsetWidth;
+                const cardOffset = card.offsetLeft;
+                const scrollPosition = cardOffset - (containerWidth - cardWidth) / 2;
+                prayerTimes.scrollTo({ left: scrollPosition, behavior: 'smooth' });
             }
         }
 
@@ -400,32 +403,10 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        /* Small screen adjustments */
         @media (max-width: 768px) {
             #location-title {
-                font-size: 1.25rem;
-            }
-
-            #gmt-info, #location-address, #gregorian-date, #hijri-date, #timezone {
-                font-size: 0.875rem;
-            }
-
-            .dcd-calender img {
-                height: 32px;
-                width: 32px;
-            }
-
-            .dcd-calender p, .dcd-calender span {
-                font-size: 0.75rem;
-            }
-
-            .dcd-calender {
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #location-title {
-                font-size: 1rem;
+                font-size: 1.125rem;
             }
 
             #gmt-info, #location-address, #gregorian-date, #hijri-date, #timezone {
@@ -437,9 +418,117 @@
                 width: 28px;
             }
 
-            #method-select, #time-format-select {
+            .dcd-calender p {
+                font-size: 0.65rem;
+            }
+
+            .dcd-calender span {
+                font-size: 0.55rem;
+            }
+
+            .dcd-calender {
+                padding: 6px;
+                margin-right: 8px;
+            }
+
+            #change-location {
+                padding: 6px 8px;
+            }
+
+            #change-location span:first-child {
+                font-size: 0.65rem;
+            }
+
+            #change-location .w-7 {
+                width: 24px;
+                height: 24px;
+            }
+
+            #change-location .text-sm {
                 font-size: 0.75rem;
-                padding: 0.5rem;
+            }
+
+            #method-select, #time-format-select {
+                font-size: 0.65rem;
+                padding: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #location-title {
+                font-size: 1rem;
+            }
+
+            #gmt-info, #location-address, #gregorian-date, #hijri-date, #timezone {
+                font-size: 0.65rem;
+            }
+
+            .dcd-calender img {
+                height: 24px;
+                width: 24px;
+            }
+
+            .dcd-calender p {
+                font-size: 0.55rem;
+            }
+
+            .dcd-calender span {
+                font-size: 0.5rem;
+            }
+
+            .dcd-calender {
+                padding: 4px;
+                margin-right: 6px;
+            }
+
+            #change-location {
+                padding: 4px 6px;
+            }
+
+            #change-location span:first-child {
+                font-size: 0.55rem;
+            }
+
+            #change-location .w-7 {
+                width: 20px;
+                height: 20px;
+            }
+
+            #change-location .text-sm {
+                font-size: 0.65rem;
+            }
+
+            #method-select, #time-format-select {
+                font-size: 0.55rem;
+                padding: 3px;
+            }
+
+            #prayer-times .w-[180px] {
+                width: 140px;
+            }
+
+            #prayer-times .h-[120px] {
+                height: 100px;
+            }
+
+            #prayer-times .h-[140px] {
+                height: 120px;
+            }
+
+            #prayer-times .text-sm {
+                font-size: 0.65rem;
+            }
+
+            #prayer-times .text-base {
+                font-size: 0.75rem;
+            }
+
+            #prayer-times .text-xs {
+                font-size: 0.55rem;
+            }
+
+            #prayer-times .p-3 {
+                padding: 8px;
             }
         }
     </style>
