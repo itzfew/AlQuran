@@ -1,286 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasbih Counter</title>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Custom styles for 3D beads and animations */
-      .bead {
-        background: radial-gradient(circle at 30%, #5b3a10, #2c1a05);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-        transition: transform 0.6s ease, box-shadow 0.3s ease, opacity 0.6s ease;
-      }
-      .bead-active {
-        cursor: grab;
-      }
-      .bead-active:active {
-        transform: scale(0.92);
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-        cursor: grabbing;
-      }
-      .rope {
-        background: linear-gradient(to bottom, #8b4513, #4a2c0b);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-      .vibrate {
-        animation: vibrate 0.15s ease;
-      }
-      @keyframes vibrate {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-3px); }
-        50% { transform: translateX(3px); }
-        75% { transform: translateX(-3px); }
-      }
-      .slide-down {
-        animation: slideDown 0.6s ease forwards;
-      }
-      @keyframes slideDown {
-        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-        100% { transform: translateY(180px) rotate(15deg); opacity: 0; }
-      }
-      .slide-in {
-        animation: slideIn 0.6s ease forwards;
-      }
-      @keyframes slideIn {
-        0% { transform: translateY(-70px) rotate(-15deg); opacity: 0; }
-        100% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      }
-      .slide-to-bottom {
-        animation: slideToBottom 0.6s ease forwards;
-      }
-      @keyframes slideToBottom {
-        0% { transform: translateY(0); }
-        100% { transform: translateY(64px); }
-      }
-      @media (min-width: 640px) {
-        @keyframes slideToBottom {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(80px); }
+        /* Custom styles for 3D beads and animations */
+        .bead {
+            background: radial-gradient(circle at 30%, #5b3a10, #2c1a05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: transform 0.6s ease, box-shadow 0.3s ease, opacity 0.6s ease;
         }
-      }
-      .bead-container {
-        touch-action: none; /* Prevent default touch scrolling */
-        overflow: hidden; /* Hide beads that move out of bounds */
-      }
-      .milestone-glow {
-        animation: glow 0.5s ease-in-out 2;
-      }
-      @keyframes glow {
-        0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
-      }
-      body {
-        background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
-        background-size: 200px;
-      }
+        .bead-active {
+            cursor: grab;
+        }
+        .bead-active:active {
+            transform: scale(0.92);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+            cursor: grabbing;
+        }
+        .rope {
+            background: linear-gradient(to bottom, #8b4513, #4a2c0b);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        .vibrate {
+            animation: vibrate 0.15s ease;
+        }
+        @keyframes vibrate {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            50% { transform: translateX(3px); }
+            75% { transform: translateX(-3px); }
+        }
+        .slide-down {
+            animation: slideDown 0.6s ease forwards;
+        }
+        @keyframes slideDown {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(180px) rotate(15deg); opacity: 0; }
+        }
+        .slide-in {
+            animation: slideIn 0.6s ease forwards;
+        }
+        @keyframes slideIn {
+            0% { transform: translateY(-70px) rotate(-15deg); opacity: 0; }
+            100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        }
+        .slide-to-bottom {
+            animation: slideToBottom 0.6s ease forwards;
+        }
+        @keyframes slideToBottom {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(64px); }
+        }
+        @media (min-width: 640px) {
+            @keyframes slideToBottom {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(80px); }
+            }
+        }
+        .bead-container {
+            touch-action: none;
+            overflow: hidden;
+        }
+        .milestone-glow {
+            animation: glow 0.5s ease-in-out 2;
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+        }
+        body {
+            
+            background-size: 200px;
+        }
+        .scrollbar-thin {
+            scrollbar-width: thin;
+        }
+        .scrollbar-thumb-blue-700::-webkit-scrollbar-thumb {
+            background-color: #fefaf4;
+            border-radius: 10px;
+        }
+        .scrollbar-track-gray-900::-webkit-scrollbar-track {
+            background-color: #fefaf4;
+        }
+        .overflow-x-auto {
+            -webkit-overflow-scrolling: touch;
+        }
+        .settings-container {
+            display: flex;
+            justify-content: flex-start;
+        }
+        @media (min-width: 640px) {
+            .settings-container {
+                justify-content: center;
+            }
+        }
     </style>
-  </head>
-  <body class="min-h-screen bg-gradient-to-b from-blue-950 to-blue-900 flex flex-col items-center justify-center text-white font-sans">
-    <!-- Settings -->
-    <div class="absolute top-4 right-4 flex items-center gap-2 bg-black bg-opacity-70 px-4 py-2 rounded-xl shadow-lg">
-      <label for="soundToggle" class="font-semibold text-sm">Sound:</label>
-      <button id="soundToggle" class="bg-blue-700 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-900 transition">ON</button>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-950 to-blue-900 flex flex-col items-center text-white font-sans">
+    <!-- Header -->
+    <header class="bg-blue-950 text-white flex items-center justify-between px-4 py-3 shadow fixed top-0 left-0 w-full z-10">
+        <h1 class="text-lg font-semibold mx-auto">Tasbih Counter</h1>
+        <div class="flex items-center gap-2">
+            <label for="soundToggle" class="font-semibold text-sm">Sound:</label>
+            <button id="soundToggle" class="bg-blue-700 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-900 transition">ON</button>
+        </div>
+    </header>
+
+    <!-- Settings Bar -->
+    <div class="bg-gray-900 border-b mt-14 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-gray-900 w-full">
+        <div class="settings-container text-sm font-medium text-gray-400">
+            <a href="index.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+                <i class="fas fa-book-quran"></i>
+                <span class="ml-2">Quran</span>
+            </a>
+            <a href="hadith.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+                <i class="fas fa-kaaba"></i>
+                <span class="ml-2">Hadith</span>
+            </a>
+            <a href="kalima.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+                <i class="fas fa-hand-point-right"></i>
+                <span class="ml-2">Kalima</span>
+            </a>
+            <a href="tasbih.html" class="inline-flex flex-none px-4 py-3 text-center border-b-2 border-blue-700 text-white font-semibold min-w-[90px]">
+                <i class="fas fa-praying-hands"></i>
+                <span class="ml-2">Tasbih</span>
+            </a>
+            <a href="99-names.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+                <i class="fas fa-mosque"></i>
+                <span class="ml-2">99 Names</span>
+            </a>
+            <a href="prayer.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-blue-700 hover:text-white min-w-[90px]">
+                <i class="fas fa-pray"></i>
+                <span class="ml-2">Prayer</span>
+            </a>
+        </div>
     </div>
 
     <!-- Dhikr Selection -->
     <div class="mt-4">
-      <select id="steps" class="sbtn bg-gray-900 text-white px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md">
-        <option selected value="ALHAMDULILLAH">ALHAMDULILLAH</option>
-        <option value="ALLAHU AKBAR">ALLAHU AKBAR</option>
-        <option value="SUBHAN ALLAH">SUBHAN ALLAH</option>
-      </select>
+        <select id="steps" class="sbtn bg-gray-900 text-white px-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md">
+            <option selected value="ALHAMDULILLAH">ALHAMDULILLAH</option>
+            <option value="ALLAHU AKBAR">ALLAHU AKBAR</option>
+            <option value="SUBHAN ALLAH">SUBHAN ALLAH</option>
+        </select>
     </div>
 
     <!-- Tasbih Container -->
     <div class="container w-full max-w-[280px] sm:max-w-sm flex flex-col items-center justify-center mt-6">
-      <div class="box bg-blue-950 bg-opacity-90 rounded-2xl p-6 w-full relative shadow-2xl">
-        <!-- Counter Display -->
-        <input
-          id="counter"
-          class="input w-full text-center text-4xl sm:text-5xl font-bold bg-white text-blue-950 rounded-lg py-2 mb-6 shadow-inner"
-          readonly
-          type="text"
-          value="0"
-        />
-        <!-- Rope and Beads -->
-        <div class="bead-container relative flex justify-center items-center h-44 sm:h-52">
-          <div class="rope w-1.5 h-full rounded-full absolute"></div>
-          <div id="bead1" class="bead w-12 h-12 sm:w-14 sm:h-14 rounded-full absolute top-0"></div>
-          <div id="bead2" class="bead bead-active w-12 h-12 sm:w-14 sm:h-14 rounded-full absolute top-16 sm:top-20"></div>
+        <div class="box bg-blue-950 bg-opacity-90 rounded-2xl p-6 w-full relative shadow-2xl">
+            <!-- Counter Display -->
+            <input
+                id="counter"
+                class="input w-full text-center text-4xl sm:text-5xl font-bold bg-white text-blue-950 rounded-lg py-2 mb-6 shadow-inner"
+                readonly
+                type="text"
+                value="0"
+            />
+            <!-- Rope and Beads -->
+            <div class="bead-container relative flex justify-center items-center h-44 sm:h-52">
+                <div class="rope w-1.5 h-full rounded-full absolute"></div>
+                <div id="bead1" class="bead w-12 h-12 sm:w-14 sm:h-14 rounded-full absolute top-0"></div>
+                <div id="bead2" class="bead bead-active w-12 h-12 sm:w-14 sm:h-14 rounded-full absolute top-16 sm:top-20"></div>
+            </div>
+            <!-- Reset Button -->
+            <button class="btn1 absolute top-2 right-2 w-8 h-8 bg-red-700 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-800 transition shadow-md">R</button>
         </div>
-        <!-- Reset Button -->
-        <button class="btn1 absolute top-2 right-2 w-8 h-8 bg-red-700 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-800 transition shadow-md">R</button>
-      </div>
     </div>
 
     <!-- Audio for Click Sound -->
     <audio id="clickSound" src="https://quran-online.pages.dev/source/click.mp3" preload="auto"></audio>
 
     <script>
-      const input = document.getElementById('counter');
-      const soundToggleButton = document.getElementById('soundToggle');
-      const clickSound = document.getElementById('clickSound');
-      const resetButton = document.querySelector('.btn1');
-      const steps = document.getElementById('steps');
-      const bead1 = document.getElementById('bead1');
-      const bead2 = document.getElementById('bead2');
-      let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
-      let isDragging = false;
-      let currentY = 0;
-      let topBead = bead1;
-      let bottomBead = bead2;
+        const input = document.getElementById('counter');
+        const soundToggleButton = document.getElementById('soundToggle');
+        const clickSound = document.getElementById('clickSound');
+        const resetButton = document.querySelector('.btn1');
+        const steps = document.getElementById('steps');
+        const bead1 = document.getElementById('bead1');
+        const bead2 = document.getElementById('bead2');
+        let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+        let isDragging = false;
+        let currentY = 0;
+        let topBead = bead1;
+        let bottomBead = bead2;
 
-      // Initialize sound toggle
-      soundToggleButton.textContent = soundEnabled ? 'ON' : 'OFF';
-
-      // Toggle sound
-      soundToggleButton.addEventListener('click', () => {
-        soundEnabled = !soundEnabled;
+        // Initialize sound toggle
         soundToggleButton.textContent = soundEnabled ? 'ON' : 'OFF';
-        localStorage.setItem('soundEnabled', soundEnabled);
-      });
 
-      // Reset counter and beads
-      resetButton.addEventListener('click', () => {
-        if (soundEnabled) {
-          clickSound.play();
-          navigator.vibrate?.(50);
+        // Toggle sound
+        soundToggleButton.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundToggleButton.textContent = soundEnabled ? 'ON' : 'OFF';
+            localStorage.setItem('soundEnabled', soundEnabled);
+        });
+
+        // Reset counter and beads
+        resetButton.addEventListener('click', () => {
+            if (soundEnabled) {
+                clickSound.play();
+                navigator.vibrate?.(50);
+            }
+            localStorage.clickcount = 0;
+            input.value = 0;
+            resetBeads();
+        });
+
+        // Reset on dhikr change
+        steps.addEventListener('change', () => {
+            if (steps.value !== 'ALHAMDULILLAH') {
+                localStorage.clickcount = 0;
+                input.value = 0;
+                resetBeads();
+            }
+        });
+
+        // Initialize counter and beads
+        window.onload = () => {
+            input.value = localStorage.clickcount || 0;
+            resetBeads();
+        };
+
+        // Reset bead positions
+        function resetBeads() {
+            bead1.style.top = '0px';
+            bead2.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
+            bead1.style.transform = 'translateY(0) rotate(0deg)';
+            bead2.style.transform = 'translateY(0) rotate(0deg)';
+            bead1.style.opacity = '1';
+            bead2.style.opacity = '1';
+            bead1.style.zIndex = '20';
+            bead2.style.zIndex = '10';
+            bead1.classList.remove('bead-active');
+            bead2.classList.add('bead-active');
+            topBead = bead1;
+            bottomBead = bead2;
         }
-        localStorage.clickcount = 0;
-        input.value = 0;
-        resetBeads();
-      });
 
-      // Reset on dhikr change
-      steps.addEventListener('change', () => {
-        if (steps.value !== 'ALHAMDULILLAH') {
-          localStorage.clickcount = 0;
-          input.value = 0;
-          resetBeads();
+        // Bead interaction logic
+        function handleBeadInteraction() {
+            if (soundEnabled) {
+                clickSound.play();
+                navigator.vibrate?.(50);
+            }
+            bottomBead.style.zIndex = '20';
+            bottomBead.classList.add('vibrate', 'slide-down');
+            setTimeout(() => {
+                bottomBead.classList.remove('vibrate', 'slide-down');
+                bottomBead.style.opacity = '0';
+                bottomBead.style.top = `${window.innerWidth < 640 ? -48 : -56}px`;
+                bottomBead.style.transform = 'translateY(0) rotate(0deg)';
+                bottomBead.classList.add('slide-in');
+                bottomBead.classList.remove('bead-active');
+                setTimeout(() => {
+                    bottomBead.style.top = '0px';
+                    bottomBead.style.opacity = '1';
+                    bottomBead.classList.remove('slide-in');
+                }, 600);
+                topBead.classList.add('slide-to-bottom');
+                topBead.style.zIndex = '10';
+                setTimeout(() => {
+                    topBead.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
+                    topBead.style.transform = 'translateY(0) rotate(0deg)';
+                    topBead.classList.remove('slide-to-bottom');
+                    topBead.classList.add('bead-active');
+                    // Swap roles
+                    const temp = topBead;
+                    topBead = bottomBead;
+                    bottomBead = temp;
+                }, 600);
+            }, 600);
+            localStorage.clickcount = Number(localStorage.clickcount || 0) + 1;
+            input.value = localStorage.clickcount;
+            // Milestone glow at 33 and 99
+            if (localStorage.clickcount % 33 === 0 || localStorage.clickcount % 99 === 0) {
+                input.classList.add('milestone-glow');
+                setTimeout(() => input.classList.remove('milestone-glow'), 1000);
+            }
         }
-      });
 
-      // Initialize counter and beads
-      window.onload = () => {
-        input.value = localStorage.clickcount || 0;
-        resetBeads();
-      };
+        // Click handlers
+        bead1.addEventListener('click', () => {
+            if (bottomBead === bead1) handleBeadInteraction();
+        });
+        bead2.addEventListener('click', () => {
+            if (bottomBead === bead2) handleBeadInteraction();
+        });
 
-      // Reset bead positions
-      function resetBeads() {
-        bead1.style.top = '0px';
-        bead2.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
-        bead1.style.transform = 'translateY(0) rotate(0deg)';
-        bead2.style.transform = 'translateY(0) rotate(0deg)';
-        bead1.style.opacity = '1';
-        bead2.style.opacity = '1';
-        bead1.style.zIndex = '20';
-        bead2.style.zIndex = '10';
-        bead1.classList.remove('bead-active');
-        bead2.classList.add('bead-active');
-        topBead = bead1;
-        bottomBead = bead2;
-      }
+        // Drag handlers
+        bead1.addEventListener('mousedown', startDragging);
+        bead1.addEventListener('touchstart', startDragging);
+        bead2.addEventListener('mousedown', startDragging);
+        bead2.addEventListener('touchstart', startDragging);
 
-      // Bead interaction logic
-      function handleBeadInteraction() {
-        if (soundEnabled) {
-          clickSound.play();
-          navigator.vibrate?.(50);
+        function startDragging(e) {
+            const bead = e.target;
+            if (bead !== bottomBead) return;
+            isDragging = true;
+            const rect = bead.getBoundingClientRect();
+            currentY = (e.clientY || e.touches[0].clientY) - rect.top;
+            bead.style.transition = 'none';
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('mouseup', stopDragging);
+            document.addEventListener('touchend', stopDragging);
         }
-        bottomBead.style.zIndex = '20';
-        bottomBead.classList.add('vibrate', 'slide-down');
-        setTimeout(() => {
-          bottomBead.classList.remove('vibrate', 'slide-down');
-          bottomBead.style.opacity = '0';
-          bottomBead.style.top = `${window.innerWidth < 640 ? -48 : -56}px`;
-          bottomBead.style.transform = 'translateY(0) rotate(0deg)';
-          bottomBead.classList.add('slide-in');
-          bottomBead.classList.remove('bead-active');
-          setTimeout(() => {
-            bottomBead.style.top = '0px';
-            bottomBead.style.opacity = '1';
-            bottomBead.classList.remove('slide-in');
-          }, 600);
-          topBead.classList.add('slide-to-bottom');
-          topBead.style.zIndex = '10';
-          setTimeout(() => {
-            topBead.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
-            topBead.style.transform = 'translateY(0) rotate(0deg)';
-            topBead.classList.remove('slide-to-bottom');
-            topBead.classList.add('bead-active');
-            // Swap roles
-            const temp = topBead;
-            topBead = bottomBead;
-            bottomBead = temp;
-          }, 600);
-        }, 600);
-        localStorage.clickcount = Number(localStorage.clickcount || 0) + 1;
-        input.value = localStorage.clickcount;
-        // Milestone glow at 33 and 99
-        if (localStorage.clickcount % 33 === 0 || localStorage.clickcount % 99 === 0) {
-          input.classList.add('milestone-glow');
-          setTimeout(() => input.classList.remove('milestone-glow'), 1000);
+
+        function drag(e) {
+            if (!isDragging) return;
+            const bead = bottomBead;
+            const container = bead.closest('.bead-container').getBoundingClientRect();
+            let newY = (e.clientY || e.touches[0].clientY) - container.top - currentY;
+            newY = Math.max(0, Math.min(newY, window.innerWidth < 640 ? 176 : 208));
+            bead.style.top = `${newY}px`;
+            bead.style.transform = `rotate(${newY / 10}deg)`;
+            bead.style.opacity = `${1 - newY / (window.innerWidth < 640 ? 176 : 208)}`;
         }
-      }
 
-      // Click handlers
-      bead1.addEventListener('click', () => {
-        if (bottomBead === bead1) handleBeadInteraction();
-      });
-      bead2.addEventListener('click', () => {
-        if (bottomBead === bead2) handleBeadInteraction();
-      });
-
-      // Drag handlers
-      bead1.addEventListener('mousedown', startDragging);
-      bead1.addEventListener('touchstart', startDragging);
-      bead2.addEventListener('mousedown', startDragging);
-      bead2.addEventListener('touchstart', startDragging);
-
-      function startDragging(e) {
-        const bead = e.target;
-        if (bead !== bottomBead) return;
-        isDragging = true;
-        const rect = bead.getBoundingClientRect();
-        currentY = (e.clientY || e.touches[0].clientY) - rect.top;
-        bead.style.transition = 'none';
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('touchmove', drag);
-        document.addEventListener('mouseup', stopDragging);
-        document.addEventListener('touchend', stopDragging);
-      }
-
-      function drag(e) {
-        if (!isDragging) return;
-        const bead = bottomBead;
-        const container = bead.closest('.bead-container').getBoundingClientRect();
-        let newY = (e.clientY || e.touches[0].clientY) - container.top - currentY;
-        newY = Math.max(0, Math.min(newY, window.innerWidth < 640 ? 176 : 208));
-        bead.style.top = `${newY}px`;
-        bead.style.transform = `rotate(${newY / 10}deg)`;
-        bead.style.opacity = `${1 - newY / (window.innerWidth < 640 ? 176 : 208)}`;
-      }
-
-      function stopDragging(e) {
-        if (!isDragging) return;
-        const bead = bottomBead;
-        isDragging = false;
-        bead.style.transition = 'transform 0.6s ease, box-shadow 0.3s ease, opacity 0.6s ease';
-        if (parseFloat(bead.style.top) > (window.innerWidth < 640 ? 140 : 160)) {
-          handleBeadInteraction();
-        } else {
-          bead.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
-          bead.style.opacity = '1';
-          bead.style.transform = 'translateY(0) rotate(0deg)';
+        function stopDragging(e) {
+            if (!isDragging) return;
+            const bead = bottomBead;
+            isDragging = false;
+            bead.style.transition = 'transform 0.6s ease, box-shadow 0.3s ease, opacity 0.6s ease';
+            if (parseFloat(bead.style.top) > (window.innerWidth < 640 ? 140 : 160)) {
+                handleBeadInteraction();
+            } else {
+                bead.style.top = `${window.innerWidth < 640 ? 64 : 80}px`;
+                bead.style.opacity = '1';
+                bead.style.transform = 'translateY(0) rotate(0deg)';
+            }
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', stopDragging);
+            document.removeEventListener('touchend', stopDragging);
         }
-        document.removeEventListener('mousemove', drag);
-        document.removeEventListener('touchmove', drag);
-        document.removeEventListener('mouseup', stopDragging);
-        document.removeEventListener('touchend', stopDragging);
-      }
     </script>
-  </body>
+</body>
 </html>
