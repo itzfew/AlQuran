@@ -3,125 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avrad Fatiha Verses</title>
+    <title>Avrad Fatiha Heights</title>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Scheherazade New Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
-
+        :root {
+            --primary-color: #0c6155;
+            --secondary-color: #f8f9fa;
+            --highlight-color: #e6f7f5;
+        }
+        
         body {
             font-family: 'Scheherazade New', serif;
             background-color: #f9f9f9;
             margin: 0;
-            padding: 20px;
-            text-align: center;
+            padding: 0;
             direction: rtl;
-            position: relative;
+            color: #333;
         }
-
-        h1 {
-            font-size: 2em;
-            color: #003366;
-            margin-bottom: 10px;
+        
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
-
-        h2 {
-            font-size: 1.5em;
-            color: #660000;
-            margin-bottom: 20px;
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 16px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
-
+        
+        .tabs-container {
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            position: sticky;
+            top: 56px;
+            z-index: 40;
+        }
+        
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: flex-start;
+            min-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .tab {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+            background-color: var(--highlight-color);
+        }
+        
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+        
+        .book-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .author {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+        
         .verse {
-            font-size: 1.4em;
-            line-height: 2;
-            color: #444;
-            margin: 10px 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            font-size: 1.4rem;
+            line-height: 2.2;
+            margin: 16px 0;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: justify;
         }
-
+        
         .verse:last-child {
             border-bottom: none;
         }
-
-        .highlight-1 {
-            color: #008000;
-        }
-
-        .highlight-32 {
-            color: #0000FF;
-        }
-
-        .highlight-44 {
-            color: #FFA500;
-        }
-
-        .highlight-54 {
-            color: #800080;
-        }
-
-        .highlight-72 {
-            color: #FF4500;
-        }
-
-        .highlight-145 {
-            color: #2E8B57;
-        }
-
-        .highlight-292 {
-            color: #DAA520;
-        }
-
+        
+        .highlight-1 { color: #008000; }
+        .highlight-32 { color: #0000FF; }
+        .highlight-44 { color: #FFA500; }
+        .highlight-54 { color: #800080; }
+        .highlight-72 { color: #FF4500; }
+        .highlight-145 { color: #2E8B57; }
+        .highlight-292 { color: #DAA520; }
+        
         .controls {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            background: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 50px;
+            padding: 8px 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 30;
         }
-
+        
         .controls button {
-            font-size: 1.2em;
-            margin: 0 5px;
             background: none;
             border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            color: #333;
+            transition: all 0.2s;
         }
-
-        footer {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #777;
+        
+        .controls button:active {
+            background-color: #f0f0f0;
+        }
+        
+        .controls button i {
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+        
+        .speed-display {
+            font-size: 14px;
+            color: var(--primary-color);
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            color: #9ca3af;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
         }
     </style>
 </head>
 <body>
-    <div class="controls">
-        <button id="playPause"><i class="fa fa-play"></i></button>
-        <button id="speedDown"><i class="fa fa-minus"></i></button>
-        <span id="speedDisplay">Speed: 1x</span>
-        <button id="speedUp"><i class="fa fa-plus"></i></button>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Avrad Fatiha Heights</h1>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <a href="index.html" class="tab">
+                    <i class="fas fa-book-quran"></i>
+                    <span class="ml-2">Quran</span>
+                </a>
+                <a href="hadith.html" class="tab">
+                    <i class="fas fa-kaaba"></i>
+                    <span class="ml-2">Hadith</span>
+                </a>
+                <a href="kalima.html" class="tab">
+                    <i class="fas fa-hand-point-right"></i>
+                    <span class="ml-2">Kalima</span>
+                </a>
+                <a href="tasbih.html" class="tab">
+                    <i class="fas fa-praying-hands"></i>
+                    <span class="ml-2">Tasbih</span>
+                </a>
+                <a href="avrad.html" class="tab active">
+                    <i class="fas fa-mosque"></i>
+                    <span class="ml-2">Avrad</span>
+                </a>
+                <a href="prayer.html" class="tab">
+                    <i class="fas fa-pray"></i>
+                    <span class="ml-2">Prayer</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content" id="content">
+            <h1 class="book-title" id="bookName">...</h1>
+            <p class="author" id="writer">...</p>
+            <div id="verses">
+                <!-- Verses will be injected here dynamically -->
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <button id="speedDown">
+                <i class="fa fa-minus"></i>
+            </button>
+            <span class="speed-display" id="speedDisplay">Speed: 1x</span>
+            <button id="speedUp">
+                <i class="fa fa-plus"></i>
+            </button>
+            <button id="playPause">
+                <i class="fa fa-play"></i>
+            </button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            © 2025 Quran Online
+        </div>
     </div>
-
-    <h1 id="bookName">...</h1>
-    <h2 id="writer">...</h2>
-    <div id="verses">
-        <!-- Verses will be injected here dynamically -->
-    </div>
-
-    <footer>
-        &copy; 2025 Quran Online
-    </footer>
 
     <script>
         const url = "https://raw.githubusercontent.com/itzfew/Quran-Online/refs/heads/main/source/avrad-fatiha.json";
         const versesContainer = document.getElementById('verses');
+        const contentContainer = document.getElementById('content');
         let scrollInterval;
-        let scrollSpeed = 50; // Initial scroll speed
+        const speedLevels = [0.3, 0.5, 0.7, 1, 1.3, 1.5, 1.7, 2, 2.3, 2.5, 2.7, 3];
+        let currentSpeedIndex = 3; // Start at 1x
+        let scrollSpeed = 50; // Base scroll speed for 1x
+
+        // Update speed display and scroll speed
+        function updateSpeed() {
+            const speed = speedLevels[currentSpeedIndex];
+            scrollSpeed = 50 / speed; // Adjust scroll speed inversely proportional to speed level
+            document.getElementById('speedDisplay').textContent = `Speed: ${speed}x`;
+            if (scrollInterval) {
+                stopScroll();
+                startScroll();
+            }
+        }
 
         // Fetch and render verses
         fetch(url)
@@ -149,10 +295,12 @@
             if (scrollInterval) return;
 
             scrollInterval = setInterval(() => {
-                window.scrollBy(0, 1);
-                if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
-                    clearInterval(scrollInterval);
-                    scrollInterval = null;
+                contentContainer.scrollTop += 1;
+                
+                // Check if we've reached the bottom
+                if (contentContainer.scrollTop + contentContainer.clientHeight >= contentContainer.scrollHeight) {
+                    stopScroll();
+                    document.getElementById('playPause').innerHTML = '<i class="fa fa-play"></i>';
                 }
             }, scrollSpeed);
         };
@@ -164,7 +312,6 @@
 
         // Control buttons
         const playPauseButton = document.getElementById('playPause');
-        const speedDisplay = document.getElementById('speedDisplay');
         const speedUpButton = document.getElementById('speedUp');
         const speedDownButton = document.getElementById('speedDown');
 
@@ -179,14 +326,21 @@
         });
 
         speedUpButton.addEventListener('click', () => {
-            if (scrollSpeed > 10) scrollSpeed -= 10;
-            speedDisplay.textContent = `Speed: ${(50 / scrollSpeed).toFixed(1)}x`;
+            if (currentSpeedIndex < speedLevels.length - 1) {
+                currentSpeedIndex++;
+                updateSpeed();
+            }
         });
 
         speedDownButton.addEventListener('click', () => {
-            scrollSpeed += 10;
-            speedDisplay.textContent = `Speed: ${(50 / scrollSpeed).toFixed(1)}x`;
+            if (currentSpeedIndex > 0) {
+                currentSpeedIndex--;
+                updateSpeed();
+            }
         });
+
+        // Initialize speed display
+        updateSpeed();
     </script>
 </body>
 </html>
