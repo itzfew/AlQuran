@@ -3,245 +3,256 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Prayer Times</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
 
-        #location-info {
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: #00796b;
-            font-weight: bold;
-        }
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    <!-- Amiri Font for Arabic text -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
 
-        table, th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #00796b;
-            color: #fff;
-        }
-
-        td {
-            background-color: #fff;
-        }
-
-        .prayer-time-row {
-            background-color: #f8f8f8;
-        }
-
-        .current-prayer {
-            background-color: #ffeb3b;
-            color: #000;
-            font-weight: bold;
-        }
-
-        #date-info {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #00796b;
-            padding: 15px;
-            border: 2px solid #00796b;
-            background-color: #e0f2f1;
-            border-radius: 5px;
-        }
-
-        #method-select, #time-format-select {
-            font-size: 16px;
-            padding: 8px;
-            margin: 20px 0;
-            border: 2px solid #00796b;
-            border-radius: 5px;
-            background-color: #ffffff;
-            color: #00796b;
-            cursor: pointer;
-            width: auto;
-            max-width: 250px;
-        }
-
-        .prayer-time-row:hover {
-            background-color: #c8e6c9;
-            cursor: pointer;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            #location-info {
-                font-size: 14px;
-            }
-
-            #method-select, #time-format-select {
-                width: 100%;
-                max-width: 100%;
-            }
-
-            #date-info {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            table, th, td {
-                padding: 8px;
-                font-size: 14px;
-            }
-
-            table {
-                margin-top: 10px;
-            }
-
-            th {
-                font-size: 16px;
-            }
-
-            td {
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #location-info {
-                font-size: 12px;
-            }
-
-            #method-select, #time-format-select {
-                padding: 6px;
-            }
-
-            #date-info {
-                font-size: 12px;
-                padding: 8px;
-            }
-
-            table, th, td {
-                padding: 6px;
-                font-size: 12px;
-            }
-
-            th {
-                font-size: 14px;
-            }
-
-            td {
-                font-size: 12px;
-            }
-        }
-    </style>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-[#fefaf4] text-[#212529] font-sans">
 
-    <div id="location-info">Fetching your location...</div>
+    <!-- Header -->
+    <header class="bg-[#3a3a77] text-white flex items-center justify-between px-4 py-3 shadow fixed top-0 left-0 w-full z-10">
+        <h1 id="header-title" class="text-lg font-semibold">Prayer Times</h1>
+        <div id="search-bar" class="hidden flex items-center w-full max-w-xs">
+            <input type="text" id="search-input" placeholder="Search..." 
+                   class="p-2 text-sm border border-gray-300 rounded-md w-full text-[#212529] bg-white focus:outline-none">
+            <button id="search-clear" class="absolute right-6 text-gray-500 hover:text-[#e74c3c]">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <button id="search-toggle" class="text-xl">
+            <i class="fas fa-search"></i>
+        </button>
+    </header>
 
-    <!-- Method Selection Dropdown -->
-    <div>
-        <label for="method-select">Select Calculation Method:</label>
-        <select id="method-select" onchange="getPrayerTimes()">
-            <option value="0">Jafari / Shia Ithna-Ashari</option>
-            <option value="1">University of Islamic Sciences, Karachi</option>
-            <option value="2">Islamic Society of North America</option>
-            <option value="3" selected>Muslim World League</option>
-            <option value="4">Umm Al-Qura University, Makkah</option>
-            <option value="5">Egyptian General Authority of Survey</option>
-            <option value="7">Institute of Geophysics, University of Tehran</option>
-            <option value="8">Gulf Region</option>
-            <option value="9">Kuwait</option>
-            <option value="10">Qatar</option>
-            <option value="12">Majlis Ugama Islam Singapura, Singapore</option>
-            <option value="12">Union Organization Islamic de France</option>
-            <option value="13">Diyanet İşleri Başkanlığı, Turkey</option>
-            <option value="14">Spiritual Administration of Muslims of Russia</option>
-            <option value="15">Moonsighting Committee Worldwide</option>
-        </select>
+    <!-- Settings Container -->
+    <div class="bg-white border-b mt-14 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-[#3a3a77] scrollbar-track-[#f4f6f8]">
+        <div class="flex justify-start md:justify-center text-sm font-medium text-gray-600">
+            <a href="index.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-[#3a3a77] hover:text-[#3a3a77] min-w-[100px]">
+                <i class="fas fa-book-quran"></i>
+                <span class="ml-2">Quran</span>
+            </a>
+            <a href="hadith.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-[#3a3a77] hover:text-[#3a3a77] min-w-[100px]">
+                <i class="fas fa-kaaba"></i>
+                <span class="ml-2">Hadith</span>
+            </a>
+            <a href="kalima.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-[#3a3a77] hover:text-[#3a3a77] min-w-[100px]">
+                <i class="fas fa-hand-point-right"></i>
+                <span class="ml-2">Kalima</span>
+            </a>
+            <a href="tasbih.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-[#3a3a77] hover:text-[#3a3a77] min-w-[100px]">
+                <i class="fas fa-praying-hands"></i>
+                <span class="ml-2">Tasbih</span>
+            </a>
+            <a href="99-names.html" class="inline-flex flex-none px-4 py-3 text-center hover:border-b-2 hover:border-[#3a3a77] hover:text-[#3a3a77] min-w-[100px]">
+                <i class="fas fa-mosque"></i>
+                <span class="ml-2">99 Names</span>
+            </a>
+            <a href="prayer.html" class="inline-flex flex-none px-4 py-3 text-center border-b-2 border-[#3a3a77] text-[#3a3a77] font-semibold min-w-[100px]">
+                <i class="fas fa-pray"></i>
+                <span class="ml-2">Prayer</span>
+            </a>
+        </div>
     </div>
 
-    <!-- Time Format Selection Dropdown -->
-    <div>
-        <label for="time-format-select">Select Time Format:</label>
-        <select id="time-format-select" onchange="updateTimeFormat()">
-            <option value="12" selected>12-hour</option>
-            <option value="24">24-hour</option>
-        </select>
-    </div>
+    <!-- Prayer Times Content -->
+    <div class="max-w-7xl mx-auto mt-4 px-4">
+        <!-- Top Section -->
+        <div class="bg-white rounded-lg shadow-sm p-4 mb-6 flex justify-between items-start">
+            <!-- Left Section: Hijri Calendar and Location -->
+            <div class="flex items-center w-7/12">
+                <a href="#" class="dcd-calender bg-[#eef4f2] rounded-lg p-3 text-center mr-4 cursor-pointer hover:bg-[#e0e8e6] transition">
+                    <img src="https://resources.dawateislami.net/global/prayerTimes/resources/assets/images/home/hijri.webp" alt="Hijri" class="h-10 w-10 mx-auto mb-1">
+                    <p class="text-sm font-semibold">Hijri</p>
+                    <span class="text-xs font-semibold">Calendar</span>
+                </a>
+                <div>
+                    <h1 id="location-title" class="text-2xl font-semibold text-black capitalize mb-1">Fetching location...</h1>
+                    <p id="gmt-info" class="text-sm text-gray-600 mb-1">GMT: <span>Fetching...</span> | Height: <span>Fetching...</span></p>
+                    <p class="text-sm text-black capitalize flex items-center">
+                        <img src="https://resources.dawateislami.net/global/prayerTimes/resources/assets/images/home/point.png" alt="Location" class="h-5 w-5 mr-1 filter invert">
+                        <span id="location-address">Fetching address...</span>
+                    </p>
+                </div>
+            </div>
+            <!-- Right Section: Dates and Change Location -->
+            <div class="flex flex-col items-end w-5/12">
+                <div class="mb-2">
+                    <p class="text-sm border-b border-black flex items-center"><i class="fas fa-calendar-days mr-2"></i><span id="gregorian-date">Fetching...</span></p>
+                    <p class="text-sm border-b border-black flex items-center"><i class="fas fa-moon mr-2"></i><span id="hijri-date">Fetching...</span></p>
+                    <p class="text-sm flex items-center"><i class="fas fa-clock mr-2"></i>Timezone: <span id="timezone">Fetching...</span></p>
+                </div>
+                <button id="change-location" class="flex items-center bg-[#3a3a77] text-white rounded-lg px-4 py-2 hover:bg-[#2e2e5f] transition">
+                    <span class="font-semibold mr-2">Change</span>Location
+                    <span class="flex items-center justify-center w-9 h-9 bg-white rounded-full ml-3">
+                        <i class="fas fa-map-marker-alt text-[#3a3a77] text-lg"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
 
-    <div id="date-info"></div>
+        <!-- Prayer Times Section -->
+        <div class="bg-white rounded-lg shadow-sm p-4">
+            <div class="flex justify-end mb-4">
+                <button id="scroll-left" class="bg-[#3a3a77] text-white rounded-lg w-10 h-10 flex items-center justify-center mr-2 hover:bg-[#2e2e5f] transition">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <button id="scroll-right" class="bg-[#3a3a77] text-white rounded-lg w-10 h-10 flex items-center justify-center hover:bg-[#2e2e5f] transition">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div id="prayer-times" class="flex overflow-x-auto scrollbar-thin scrollbar-thumb-[#3a3a77] scrollbar-track-[#f4f6f8] gap-2 py-2" style="cursor: grab;">
+                <!-- Prayer time cards will be inserted here -->
+            </div>
+        </div>
 
-    <div id="prayer-times">
-        <h2>Prayer Times (Daily):</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Prayer</th>
-                    <th>Time</th>
-                </tr>
-            </thead>
-            <tbody id="times-list">
-                <!-- Prayer times will be inserted here -->
-            </tbody>
-        </table>
-    </div>
-
-    <div id="monthly-prayer-times">
-        <h2>Prayer Times (Monthly):</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Fajr</th>
-                    <th>Dhuhr</th>
-                    <th>Asr</th>
-                    <th>Maghrib</th>
-                    <th>Isha</th>
-                </tr>
-            </thead>
-            <tbody id="monthly-times-list">
-                <!-- Monthly prayer times will be inserted here -->
-            </tbody>
-        </table>
+        <!-- Method Selection -->
+        <div class="mt-4 flex gap-4 justify-center">
+            <div class="flex flex-col w-[250px]">
+                <label for="method-select" class="text-sm font-medium text-gray-600 mb-1">Calculation Method</label>
+                <select id="method-select" onchange="getPrayerTimes()" class="p-2 text-sm border border-[#3a3a77] rounded-md bg-white text-[#212529] focus:outline-none w-full">
+                    <option value="0">Jafari / Shia Ithna-Ashari</option>
+                    <option value="1">University of Islamic Sciences, Karachi</option>
+                    <option value="2">Islamic Society of North America</option>
+                    <option value="3" selected>Muslim World League</option>
+                    <option value="4">Umm Al-Qura University, Makkah</option>
+                    <option value="5">Egyptian General Authority of Survey</option>
+                    <option value="7">Institute of Geophysics, University of Tehran</option>
+                    <option value="8">Gulf Region</option>
+                    <option value="9">Kuwait</option>
+                    <option value="10">Qatar</option>
+                    <option value="11">Majlis Ugama Islam Singapura, Singapore</option>
+                    <option value="12">Union Organization Islamic de France</option>
+                    <option value="13">Diyanet İşleri Başkanlığı, Turkey</option>
+                    <option value="14">Spiritual Administration of Muslims of Russia</option>
+                    <option value="15">Moonsighting Committee Worldwide</option>
+                </select>
+            </div>
+            <div class="flex flex-col w-[150px]">
+                <label for="time-format-select" class="text-sm font-medium text-gray-600 mb-1">Time Format</label>
+                <select id="time-format-select" onchange="updateTimeFormat()" class="p-2 text-sm border border-[#3a3a77] rounded-md bg-white text-[#212529] focus:outline-none w-full">
+                    <option value="12" selected>12-hour</option>
+                    <option value="24">24-hour</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <script>
-        let timeFormat = 12; // Default time format (12-hour)
+        let timeFormat = 12;
+        let currentPrayerIndex = -1;
 
-        // Automatically fetch prayer times when the page loads
-        window.onload = function() {
+        window.addEventListener('DOMContentLoaded', () => {
             getPrayerTimes();
-        };
+
+            // Search bar toggle (placeholder)
+            const searchToggle = document.getElementById('search-toggle');
+            const searchBar = document.getElementById('search-bar');
+            const searchInput = document.getElementById('search-input');
+            const searchClear = document.getElementById('search-clear');
+            const headerTitle = document.getElementById('header-title');
+
+            searchToggle.addEventListener('click', () => {
+                searchBar.classList.toggle('hidden');
+                headerTitle.classList.toggle('hidden');
+                if (!searchBar.classList.contains('hidden')) {
+                    searchInput.focus();
+                    searchToggle.innerHTML = '<i class="fas fa-search"></i>';
+                } else {
+                    searchInput.value = '';
+                }
+            });
+
+            searchClear.addEventListener('click', () => {
+                searchInput.value = '';
+                searchBar.classList.add('hidden');
+                headerTitle.classList.remove('hidden');
+                searchInput.focus();
+            });
+
+            // Settings tabs scroll to left
+            const settingsContainer = document.querySelector('.bg-white.border-b .flex.overflow-x-auto');
+            settingsContainer.scrollLeft = 0;
+
+            // Prayer times scrolling
+            const prayerTimes = document.getElementById('prayer-times');
+            const scrollLeftBtn = document.getElementById('scroll-left');
+            const scrollRightBtn = document.getElementById('scroll-right');
+
+            scrollLeftBtn.addEventListener('click', () => {
+                prayerTimes.scrollBy({ left: -228, behavior: 'smooth' });
+            });
+
+            scrollRightBtn.addEventListener('click', () => {
+                prayerTimes.scrollBy({ left: 228, behavior: 'smooth' });
+            });
+
+            // Drag to scroll
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            prayerTimes.addEventListener('mousedown', (e) => {
+                isDown = true;
+                prayerTimes.style.cursor = 'grabbing';
+                startX = e.pageX - prayerTimes.offsetLeft;
+                scrollLeft = prayerTimes.scrollLeft;
+            });
+
+            prayerTimes.addEventListener('mouseleave', () => {
+                isDown = false;
+                prayerTimes.style.cursor = 'grab';
+            });
+
+            prayerTimes.addEventListener('mouseup', () => {
+                isDown = false;
+                prayerTimes.style.cursor = 'grab';
+            });
+
+            prayerTimes.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - prayerTimes.offsetLeft;
+                const walk = (x - startX) * 2;
+                prayerTimes.scrollLeft = scrollLeft - walk;
+            });
+
+            // Change location
+            document.getElementById('change-location').addEventListener('click', () => {
+                getPrayerTimes();
+            });
+        });
 
         function getPrayerTimes() {
-            const method = document.getElementById("method-select").value;
+            const method = document.getElementById('method-select').value;
 
-            // Check if geolocation is available
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
+                navigator.geolocation.getCurrentPosition(position => {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
-                    const date = new Date().toISOString().split('T')[0].split('-').reverse().join('-'); // Current date in DD-MM-YYYY format
+                    const date = new Date().toISOString().split('T')[0].split('-').reverse().join('-');
 
-                    // Display location info
+                    // Fetch location info
                     const geocodeUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
                     fetch(geocodeUrl)
                         .then(response => response.json())
-                        .then(locationData => {
-                            const address = locationData.locality || 'Address not available';
-                            document.getElementById('location-info').innerHTML = `Your Location: ${address}, Latitude: ${latitude.toFixed(2)}, Longitude: ${longitude.toFixed(2)}`;
+                        .then(data => {
+                            const address = data.locality ? `${data.locality}, ${data.principalSubdivision}, ${data.countryName}` : 'Address not available';
+                            const city = data.locality || 'Unknown';
+                            document.getElementById('location-title').textContent = `Prayer Times in ${city}`;
+                            document.getElementById('location-address').textContent = address;
+                            document.getElementById('gmt-info').innerHTML = `GMT: <span>${(new Date().getTimezoneOffset() / -60).toFixed(1)}</span> | Height: <span>${(data.elevation || 0).toFixed(2)} feet</span>`;
+                            document.getElementById('timezone').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-                            // Get prayer times for today
+                            // Fetch prayer times
                             const prayerTimesUrl = `https://api.aladhan.com/v1/timings/${date}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
-
                             fetch(prayerTimesUrl)
                                 .then(response => response.json())
                                 .then(data => {
@@ -251,100 +262,105 @@
                                         displayDateInfo(dateData);
                                         displayPrayerTimes(timings);
                                     } else {
-                                        alert('Error fetching prayer times. Please try again.');
+                                        alert('Error fetching prayer times.');
                                     }
                                 })
                                 .catch(error => {
                                     console.error('Error:', error);
-                                    alert('An error occurred. Please try again.');
+                                    alert('An error occurred.');
                                 });
-
-                            // Get monthly prayer times
-                            const currentMonth = new Date().getMonth() + 1; // Current month (1-12)
-                            const currentYear = new Date().getFullYear(); // Current year
-                            const monthlyPrayerTimesUrl = `https://api.aladhan.com/v1/calendar/${currentYear}/${currentMonth}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
-
-                            fetch(monthlyPrayerTimesUrl)
-                                .then(response => response.json())
-                                .then(monthlyData => {
-                                    if (monthlyData.code === 200) {
-                                        displayMonthlyPrayerTimes(monthlyData.data);
-                                    } else {
-                                        alert('Error fetching monthly prayer times. Please try again.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert('An error occurred. Please try again.');
-                                });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching location:', error);
+                            document.getElementById('location-title').textContent = 'Unable to fetch location';
+                            alert('Error fetching location.');
                         });
-                }, function(error) {
-                    alert('Error fetching location. Please enable location services.');
+                }, error => {
+                    alert('Please enable location services.');
+                    document.getElementById('location-title').textContent = 'Location access denied';
                 });
             } else {
-                alert('Geolocation is not supported by this browser.');
+                alert('Geolocation not supported.');
+                document.getElementById('location-title').textContent = 'Geolocation not supported';
             }
         }
 
         function displayDateInfo(dateData) {
             const gregorianDate = dateData.gregorian;
             const hijriDate = dateData.hijri;
-
-            const gregorianDateStr = `${gregorianDate.day} ${gregorianDate.month.en} ${gregorianDate.year} (${gregorianDate.weekday.en})`;
-            const hijriDateStr = `${hijriDate.day} ${hijriDate.month.en} ${hijriDate.year} (${hijriDate.weekday.en})`;
-
-            document.getElementById('date-info').innerHTML = `
-                <strong>Gregorian Date:</strong> ${gregorianDateStr}<br>
-                <strong>Hijri Date:</strong> ${hijriDateStr}
-            `;
+            document.getElementById('gregorian-date').textContent = `${gregorianDate.day} ${gregorianDate.month.en}, ${gregorianDate.year}`;
+            document.getElementById('hijri-date').textContent = `${hijriDate.day}-${hijriDate.month.en}-${hijriDate.year}`;
         }
 
         function displayPrayerTimes(timings) {
-            const timesList = document.getElementById('times-list');
-            timesList.innerHTML = ''; // Clear previous times
+            const prayerTimes = document.getElementById('prayer-times');
+            prayerTimes.innerHTML = '';
+            const now = new Date();
+            const prayers = [
+                { name: 'Fajr', time: timings.Fajr },
+                { name: 'Sunrise', time: timings.Sunrise },
+                { name: 'Dhuhr', time: timings.Dhuhr },
+                { name: 'Asr', time: timings.Asr },
+                { name: 'Maghrib', time: timings.Maghrib },
+                { name: 'Isha', time: timings.Isha }
+            ];
 
-            const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-            prayers.forEach(prayer => {
-                const time = timings[prayer];
-                const formattedTime = timeFormat === 12 ? convertTo12Hour(time) : time;
-
-                const row = document.createElement('tr');
-                row.classList.add('prayer-time-row');
-                row.innerHTML = `<td>${prayer}</td><td>${formattedTime}</td>`;
-                timesList.appendChild(row);
+            currentPrayerIndex = -1;
+            let nextPrayerIndex = -1;
+            prayers.forEach((prayer, index) => {
+                const [hour, minute] = prayer.time.split(':').map(Number);
+                const prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
+                if (now >= prayerTime && now < new Date(prayerTime.getTime() + 60*60*1000)) {
+                    currentPrayerIndex = index;
+                } else if (now < prayerTime && nextPrayerIndex === -1) {
+                    nextPrayerIndex = index;
+                }
             });
-        }
 
-        function displayMonthlyPrayerTimes(monthlyData) {
-            const monthlyTimesList = document.getElementById('monthly-times-list');
-            monthlyTimesList.innerHTML = ''; // Clear previous monthly times
+            prayers.forEach((prayer, index) => {
+                const formattedTime = timeFormat === 12 ? convertTo12Hour(prayer.time) : prayer.time;
+                const isCurrent = index === currentPrayerIndex;
+                const isNext = index === nextPrayerIndex && currentPrayerIndex === -1;
+                const card = document.createElement('div');
+                card.className = 'flex-none w-[228px] bg-[#eef4f2] rounded-lg p-4 text-center min-h-[155px] flex flex-col justify-center';
+                let heightClass = 'h-[155px]';
+                let bgClass = 'bg-[#eef4f2] text-black';
+                let borderClass = '';
+                let statusText = '';
 
-            monthlyData.forEach(item => {
-                const date = item.date.gregorian.date;
-                const fajr = item.timings.Fajr;
-                const dhuhr = item.timings.Dhuhr;
-                const asr = item.timings.Asr;
-                const maghrib = item.timings.Maghrib;
-                const isha = item.timings.Isha;
+                if (isCurrent) {
+                    heightClass = 'h-[180px]';
+                    bgClass = 'bg-[#3a3a77] text-white';
+                    statusText = '<p class="text-sm font-bold mb-2">Current</p>';
+                } else if (isNext) {
+                    heightClass = 'h-[180px]';
+                    bgClass = 'bg-[#b6b6e1] text-black';
+                    borderClass = 'border border-[#6e6ea7]';
+                    statusText = '<p class="text-sm font-bold mb-2">Upcoming</p>';
+                }
 
-                const formattedFajr = timeFormat === 12 ? convertTo12Hour(fajr) : fajr;
-                const formattedDhuhr = timeFormat === 12 ? convertTo12Hour(dhuhr) : dhuhr;
-                const formattedAsr = timeFormat === 12 ? convertTo12Hour(asr) : asr;
-                const formattedMaghrib = timeFormat === 12 ? convertTo12Hour(maghrib) : maghrib;
-                const formattedIsha = timeFormat === 12 ? convertTo12Hour(isha) : isha;
-
-                const row = document.createElement('tr');
-                row.classList.add('prayer-time-row');
-                row.innerHTML = `
-                    <td>${date}</td>
-                    <td>${formattedFajr}</td>
-                    <td>${formattedDhuhr}</td>
-                    <td>${formattedAsr}</td>
-                    <td>${formattedMaghrib}</td>
-                    <td>${formattedIsha}</td>
+                card.innerHTML = `
+                    ${statusText}
+                    <p class="text-lg font-bold">${prayer.name}</p>
+                    <p class="text-xl font-bold">${formattedTime}</p>
                 `;
-                monthlyTimesList.appendChild(row);
+                card.className += ` ${heightClass} ${bgClass} ${borderClass}`;
+                card.dataset.index = index;
+                prayerTimes.appendChild(card);
             });
+
+            // Center current or next prayer
+            if (currentPrayerIndex !== -1 || nextPrayerIndex !== -1) {
+                const targetIndex = currentPrayerIndex !== -1 ? currentPrayerIndex : nextPrayerIndex;
+                const card = prayerTimes.querySelector(`[data-index="${targetIndex}"]`);
+                if (card) {
+                    const containerWidth = prayerTimes.offsetWidth;
+                    const cardWidth = card.offsetWidth;
+                    const cardOffset = card.offsetLeft;
+                    const scrollPosition = cardOffset - (containerWidth - cardWidth) / 2;
+                    prayerTimes.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                }
+            }
         }
 
         function convertTo12Hour(time) {
@@ -353,15 +369,79 @@
             const suffix = hour >= 12 ? 'PM' : 'AM';
             if (hour > 12) hour -= 12;
             if (hour === 0) hour = 12;
-
             return `${hour}:${minute} ${suffix}`;
         }
 
         function updateTimeFormat() {
-            timeFormat = document.getElementById("time-format-select").value;
+            timeFormat = parseInt(document.getElementById('time-format-select').value);
             getPrayerTimes();
         }
     </script>
 
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+
+        .scrollbar-thin {
+            scrollbar-width: thin;
+        }
+
+        .scrollbar-thumb-[#3a3a77]::-webkit-scrollbar-thumb {
+            background-color: #3a3a77;
+            border-radius: 10px;
+        }
+
+        .scrollbar-track-[#f4f6f8]::-webkit-scrollbar-track {
+            background-color: #f4f6f8;
+        }
+
+        .overflow-x-auto {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 768px) {
+            #location-title {
+                font-size: 1.25rem;
+            }
+
+            #gmt-info, #location-address, #gregorian-date, #hijri-date, #timezone {
+                font-size: 0.875rem;
+            }
+
+            .dcd-calender img {
+                height: 32px;
+                width: 32px;
+            }
+
+            .dcd-calender p, .dcd-calender span {
+                font-size: 0.75rem;
+            }
+
+            .dcd-calender {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #location-title {
+                font-size: 1rem;
+            }
+
+            #gmt-info, #location-address, #gregorian-date, #hijri-date, #timezone {
+                font-size: 0.75rem;
+            }
+
+            .dcd-calender img {
+                height: 28px;
+                width: 28px;
+            }
+
+            #method-select, #time-format-select {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+        }
+    </style>
 </body>
 </html>
