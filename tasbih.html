@@ -42,13 +42,13 @@
         }
         @keyframes slideDown {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(140px) rotate(10deg); opacity: 0; }
+            100% { transform: translateY(200px) rotate(10deg); opacity: 0; }
         }
         .slide-in {
             animation: slideIn 0.5s ease forwards;
         }
         @keyframes slideIn {
-            0% { transform: translateY(-50px) rotate(-10deg); opacity: 0; }
+            0% { transform: translateY(-56px) rotate(-10deg); opacity: 0; }
             100% { transform: translateY(0) rotate(0deg); opacity: 1; }
         }
         .slide-to-bottom {
@@ -56,12 +56,34 @@
         }
         @keyframes slideToBottom {
             0% { transform: translateY(0); }
-            100% { transform: translateY(48px); }
+            100% { transform: translateY(64px); }
         }
         @media (min-width: 640px) {
+            @keyframes slideDown {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(240px) rotate(10deg); opacity: 0; }
+            }
+            @keyframes slideIn {
+                0% { transform: translateY(-64px) rotate(-10deg); opacity: 0; }
+                100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            }
             @keyframes slideToBottom {
                 0% { transform: translateY(0); }
-                100% { transform: translateY(60px); }
+                100% { transform: translateY(80px); }
+            }
+        }
+        @media (min-width: 1024px) {
+            @keyframes slideDown {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(280px) rotate(10deg); opacity: 0; }
+            }
+            @keyframes slideIn {
+                0% { transform: translateY(-80px) rotate(-10deg); opacity: 0; }
+                100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            }
+            @keyframes slideToBottom {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(96px); }
             }
         }
         .bead-container {
@@ -76,7 +98,7 @@
             50% { box-shadow: 0 0 16px rgba(255, 215, 0, 1); }
         }
         body {
-            
+            background-color: #fefaf4;
             background-size: 150px;
         }
         .scrollbar-thin {
@@ -161,7 +183,7 @@
         </div>
 
         <!-- Tasbih Container -->
-        <div class="w-full max-w-[260px] sm:max-w-sm flex flex-col items-center justify-center mt-6">
+        <div class="w-full max-w-[280px] sm:max-w-md lg:max-w-lg flex flex-col items-center justify-center mt-6">
             <div class="box bg-blue-950 bg-opacity-90 rounded-2xl p-5 w-full relative shadow-2xl">
                 <!-- Counter Display -->
                 <input
@@ -172,10 +194,10 @@
                     value="0"
                 />
                 <!-- Rope and Beads -->
-                <div class="bead-container relative flex justify-center items-center h-36 sm:h-44">
-                    <div class="rope w-1 h-full rounded-full absolute"></div>
-                    <div id="bead1" class="bead w-10 h-10 sm:w-12 sm:h-12 rounded-full absolute top-0"></div>
-                    <div id="bead2" class="bead bead-active w-10 h-10 sm:w-12 sm:h-12 rounded-full absolute top-12 sm:top-16"></div>
+                <div class="bead-container relative flex justify-center items-center h-48 sm:h-56 lg:h-64">
+                    <div class="rope w-1.5 h-[150%] rounded-full absolute top-0"></div>
+                    <div id="bead1" class="bead w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full absolute top-0"></div>
+                    <div id="bead2" class="bead bead-active w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full absolute top-16 sm:top-20 lg:top-24"></div>
                 </div>
                 <!-- Reset Button -->
                 <button id="resetButton" class="btn1 absolute top-2 right-2 w-7 h-7 bg-red-700 text-white rounded-full flex items-center justify-center text-sm font-bold hover:bg-red-800 transition shadow-md">R</button>
@@ -258,7 +280,7 @@
             resetBeads();
         }
 
-        // Reset on dhikr change
+        // Load count on dhikr change
         steps.addEventListener('change', () => {
             const currentDhikr = steps.value;
             const count = localStorage.getItem(`clickcount_${currentDhikr}`) || 0;
@@ -277,7 +299,7 @@
         // Reset bead positions
         function resetBeads() {
             bead1.style.top = '0px';
-            bead2.style.top = `${window.innerWidth < 640 ? 48 : 60}px`;
+            bead2.style.top = `${window.innerWidth < 640 ? 64 : window.innerWidth < 1024 ? 80 : 96}px`;
             bead1.style.transform = 'translateY(0) rotate(0deg)';
             bead2.style.transform = 'translateY(0) rotate(0deg)';
             bead1.style.opacity = '1';
@@ -301,7 +323,7 @@
             setTimeout(() => {
                 bottomBead.classList.remove('vibrate', 'slide-down');
                 bottomBead.style.opacity = '0';
-                bottomBead.style.top = `${window.innerWidth < 640 ? -40 : -48}px`;
+                bottomBead.style.top = `${window.innerWidth < 640 ? -56 : window.innerWidth < 1024 ? -64 : -80}px`;
                 bottomBead.style.transform = 'translateY(0) rotate(0deg)';
                 bottomBead.classList.add('slide-in');
                 bottomBead.classList.remove('bead-active');
@@ -313,7 +335,7 @@
                 topBead.classList.add('slide-to-bottom');
                 topBead.style.zIndex = '10';
                 setTimeout(() => {
-                    topBead.style.top = `${window.innerWidth < 640 ? 48 : 60}px`;
+                    topBead.style.top = `${window.innerWidth < 640 ? 64 : window.innerWidth < 1024 ? 80 : 96}px`;
                     topBead.style.transform = 'translateY(0) rotate(0deg)';
                     topBead.classList.remove('slide-to-bottom');
                     topBead.classList.add('bead-active');
@@ -363,11 +385,12 @@
             if (!isDragging) return;
             const bead = bottomBead;
             const container = bead.closest('.bead-container').getBoundingClientRect();
+            const maxY = window.innerWidth < 640 ? 200 : window.innerWidth < 1024 ? 240 : 280;
             let newY = (e.clientY || e.touches[0].clientY) - container.top - currentY;
-            newY = Math.max(0, Math.min(newY, window.innerWidth < 640 ? 144 : 176));
+            newY = Math.max(0, Math.min(newY, maxY));
             bead.style.top = `${newY}px`;
             bead.style.transform = `rotate(${newY / 15}deg)`;
-            bead.style.opacity = `${1 - newY / (window.innerWidth < 640 ? 144 : 176)}`;
+            bead.style.opacity = `${1 - newY / maxY}`;
         }
 
         function stopDragging() {
@@ -375,10 +398,11 @@
             const bead = bottomBead;
             isDragging = false;
             bead.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease, opacity 0.5s ease';
-            if (parseFloat(bead.style.top) > (window.innerWidth < 640 ? 100 : 120)) {
+            const threshold = window.innerWidth < 640 ? 140 : window.innerWidth < 1024 ? 160 : 180;
+            if (parseFloat(bead.style.top) > threshold) {
                 handleBeadInteraction();
             } else {
-                bead.style.top = `${window.innerWidth < 640 ? 48 : 60}px`;
+                bead.style.top = `${window.innerWidth < 640 ? 64 : window.innerWidth < 1024 ? 80 : 96}px`;
                 bead.style.opacity = '1';
                 bead.style.transform = 'translateY(0) rotate(0deg)';
             }
