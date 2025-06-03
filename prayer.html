@@ -198,8 +198,10 @@
             });
 
             // Settings tabs scroll to left
-            const settingsContainer = document.querySelector('.bg-white.border-b .flex.overflow-x-auto');
-            settingsContainer.scrollLeft = 0;
+            const settingsContainer = document.querySelector('.bg-white.border-b');
+            if (settingsContainer) {
+                settingsContainer.scrollLeft = 0;
+            }
 
             // Prayer times drag to scroll
             const prayerTimes = document.getElementById('prayer-times');
@@ -295,7 +297,7 @@
 
         function displayDateInfo(dateData) {
             const gregorianDate = dateData.gregorian;
-            const hijriDate = data.hijri;
+            const hijriDate = dateData.hijri;
             document.getElementById('gregorian-date').textContent = `${gregorianDate.day} ${gregorianDate.month.en}, ${gregorianDate.year}`;
             document.getElementById('hijri-date').textContent = `${hijriDate.day}-${hijriDate.month.en}-${hijriDate.year}`;
         }
